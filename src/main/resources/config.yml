@@ -29,6 +29,7 @@ Messages:
   pickup: "<green>Du hast das Telepad erfolgreich augehoben.</green>"
   exitChatInput: "Abgebrochen"
   upgraded: "Dein Telepad wurde aufgewertet."
+  maxLevel: "<red>Dein Telepad hat bereits das maximale Level!</red>"
   # Placeholder: <cost>
   teleport: "Dir wurden <cost> zum Teleport abgezogen."
   upgrade: "Das Aufwerten kostet <cost> Coins."

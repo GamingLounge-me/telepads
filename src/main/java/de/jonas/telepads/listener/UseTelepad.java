@@ -41,17 +41,21 @@ public class UseTelepad implements Listener{
             int id = container.get(GiveBuildItem.telepadNum, PersistentDataType.INTEGER);
             Location l = DataBasePool.getDestination(db, id);
             if (l == null) return;
-            if (Telepads.getEconomy().getBalance(e.getPlayer()) <= 2d) {
-                e.getPlayer().sendMessage(mm.deserialize(conf.getString("Messages.noMoney")));
-                return;
+            Double cost = conf.getDouble("UseTelepadCost");
+            if (cost != 0) {
+                if (Telepads.getEconomy().getBalance(e.getPlayer()) <= cost) {
+                    e.getPlayer().sendMessage(mm.deserialize(conf.getString("Messages.noMoney")));
+                    return;
+                }
+                Telepads.getEconomy().withdrawPlayer(e.getPlayer(), cost);
             }
             l.setPitch(to.getPitch());
             l.setYaw(to.getYaw());
-            Double cost = conf.getDouble("UseTelepadCost");
-            Telepads.getEconomy().withdrawPlayer(e.getPlayer(), cost);
-            e.getPlayer().sendMessage(mm.deserialize(conf.getString("Messages.teleport"),
-                Placeholder.component("cost", Component.text(cost))
-            ));
+            if (cost != 0) {
+                e.getPlayer().sendMessage(mm.deserialize(conf.getString("Messages.teleport"),
+                    Placeholder.component("cost", Component.text(cost))
+                ));
+            }
             e.getPlayer().teleport(l.add(0.5,1,0.5));
             new ParticleRunner(
                     Telepads.INSTANCE,

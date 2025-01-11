@@ -2,7 +2,7 @@ name: Telepads
 version: "${version}"
 main: de.jonas.telepads.Telepads
 description: Telepads
-api-version: "1.20.1"
+api-version: "1.21.4"
 authors:
   - "Jon1Games"
   - "gkram"
@@ -15,5 +15,5 @@ dependencies:
       join-classpath: true
     Vault:
       load: BEFORE
-      required: true
+      required: false
       join-classpath: true
