@@ -6,7 +6,7 @@ Password: ""
 AdminPermission: telepads.admin
 
 # Command settings
-PortableTelepad:
+PortableTelepadCommand:
   permission: "telepads.commands.portabletelepad"
   aliases:
     - pad

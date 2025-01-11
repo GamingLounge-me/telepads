@@ -44,8 +44,8 @@ public class GivePortableTeleportItem {
         Stuff.INSTANCE.itemBuilderManager.addleftClickEvent(teleport, "telepads:teleport_per_portable_gui");
 
         new CommandAPICommand("telepads:openTeleportGUI")
-            .withPermission(conf.getString("PortableTelepad.permission"))
-            .withAliases(conf.getStringList("PortableTelepad.aliases").toArray(num -> new String[num]))
+            .withPermission(conf.getString("PortableTelepadCommand.permission"))
+            .withAliases(conf.getStringList("PortableTelepadCommand.aliases").toArray(num -> new String[num]))
             .executesPlayer((player, arg) -> {
                 player.openInventory(new PagenationInventory(getItems(player)).getInventory());
             })
