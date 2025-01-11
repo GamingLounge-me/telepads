@@ -68,7 +68,6 @@ public class GiveBuildItem {
                 orientBlock(l5, Axis.X);
                 loc.getWorld().setType(l7, Material.STRIPPED_WARPED_HYPHAE);
                 orientBlock(l7, Axis.Z);
-                pv.getPlayer().sendMessage(mm.deserialize("Messages.createTelepad"));
         } else {
             pv.setCancelled(true);
         }

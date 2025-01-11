@@ -226,7 +226,7 @@ public class TelepadGui implements InventoryHolder{
                     .build()
             );
             Double cost = conf.getDouble("TelepadGUI.levelup.cost");
-            if (gui.level == 2) {
+            if (gui.level >= 2 && cost != 0) {
                 Telepads.getEconomy().depositPlayer((OfflinePlayer) e.getWhoClicked(), cost);
                 e.getWhoClicked().sendMessage(mm.deserialize(conf.getString("Messages.pickupRegainMoney"),
                     Placeholder.component("cost", Component.text(cost))
@@ -276,14 +276,23 @@ public class TelepadGui implements InventoryHolder{
         FileConfiguration conf = telepads.getConfig();
         DataBasePool db = Telepads.INSTANCE.basePool;
         OfflinePlayer p = (OfflinePlayer) e.getWhoClicked();
-        if (Telepads.getEconomy() == null) {
-            e.getWhoClicked().sendMessage("You shoud not get this, kontakt an admin (Line 258, TelepadGUI.java)");  
-            return;
-        }
-        if (Telepads.getEconomy().getBalance(p) >= 200d && p instanceof Player player && e.getInventory().getHolder() instanceof TelepadGui tg) {
+
+        Double cost = conf.getDouble("TelepadGUI.levelup.cost");
+        if (p instanceof Player player && e.getInventory().getHolder() instanceof TelepadGui tg) {
+            if (tg.level >= 2) {
+                player.sendMessage(mm.deserialize(conf.getString("Messages.maxLevel")));
+                return;      
+            }
+            if (cost != 0) { 
+                if (Telepads.getEconomy().getBalance(p) >= cost) {
+                    Telepads.getEconomy().withdrawPlayer(player, cost);
+                } else {
+                    player.sendMessage(mm.deserialize(conf.getString("Messages.noMoney")));
+                    return;
+                }
+            }
             DataBasePool.setLevel2(db, tg.id);
             tg.level++;
-            Telepads.getEconomy().withdrawPlayer(player, 200d);
             tg.telepadGui.setItem(16,
                 new ItemBuilder()
                     .setMaterial(Material.EMERALD)
@@ -293,8 +302,6 @@ public class TelepadGui implements InventoryHolder{
                     .build()
             );
             player.sendMessage(mm.deserialize(conf.getString("Messages.upgraded")));
-        } else if (p instanceof Player player) {
-            player.sendMessage(mm.deserialize(conf.getString("Messages.noMoney")));
         }
     }
 

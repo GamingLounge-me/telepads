@@ -60,7 +60,7 @@ public class Telepads extends JavaPlugin{
 
         CommandAPI.onEnable();
 
-        if (!setupEconomy()) getLogger().log(Level.WARNING, "Economy wasnt setupped correctly, have you installed an Eco-plugin? Vault is just an API to work with economy!");
+        if (!setupEconomy()) getLogger().log(Level.WARNING, "Economy wasnt setupped correctly, have you installed Vault and an Eco-plugin?");
 
     }
 

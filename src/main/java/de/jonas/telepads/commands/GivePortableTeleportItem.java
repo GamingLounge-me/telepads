@@ -44,8 +44,8 @@ public class GivePortableTeleportItem {
         Stuff.INSTANCE.itemBuilderManager.addleftClickEvent(teleport, "telepads:teleport_per_portable_gui");
 
         new CommandAPICommand("telepads:openTeleportGUI")
+            .withPermission(conf.getString("PortableTelepad.permission"))
             .withAliases(conf.getStringList("PortableTelepad.aliases").toArray(num -> new String[num]))
-            .withPermission("PortableTelepad.permission")
             .executesPlayer((player, arg) -> {
                 player.openInventory(new PagenationInventory(getItems(player)).getInventory());
             })
@@ -58,16 +58,18 @@ public class GivePortableTeleportItem {
         FileConfiguration conf = telepads.getConfig();
         DataBasePool db = Telepads.INSTANCE.basePool;
         e.setCancelled(true);
-        e.getWhoClicked().closeInventory();
-        double cost = conf.getDouble("UseTelepadCost");
-        if (Telepads.getEconomy().getBalance((OfflinePlayer) e.getWhoClicked()) <= cost) {
-            e.getWhoClicked().sendMessage(mm.deserialize("Messages.noMoney"));
-            return;
-        }
         if (e.getCurrentItem() == null || e.getCurrentItem().getItemMeta() == null) return;
+        e.getWhoClicked().closeInventory();
         int id = e.getCurrentItem().getItemMeta().getPersistentDataContainer().get(Events.teleID, PersistentDataType.INTEGER);
         Location l = DataBasePool.getlocation(db, id).add(0.5,1,0.5);
-        Telepads.getEconomy().withdrawPlayer((OfflinePlayer) e.getWhoClicked(), cost);
+        double cost = conf.getDouble("UseTelepadCost");
+        if (cost != 0) {
+            if (Telepads.getEconomy().getBalance((OfflinePlayer) e.getWhoClicked()) <= cost) {
+                e.getWhoClicked().sendMessage(mm.deserialize("Messages.noMoney"));
+                return;
+            }
+            Telepads.getEconomy().withdrawPlayer((OfflinePlayer) e.getWhoClicked(), cost);
+        }
         e.getWhoClicked().sendMessage(mm.deserialize("Messages.teleport",
             Placeholder.component("cost", Component.text(cost))
         ));
