@@ -8,10 +8,12 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import de.jonas.telepads.Teleportation.TeleportationManager;
 import de.jonas.telepads.commands.Admin;
 import de.jonas.telepads.commands.GiveBuildItem;
 import de.jonas.telepads.commands.GivePortableTeleportItem;
 import de.jonas.telepads.commands.ReloadCommand;
+import de.jonas.telepads.commands.Teleportation;
 import de.jonas.telepads.listener.OpenGui;
 import de.jonas.telepads.listener.PreventChangePad;
 import de.jonas.telepads.listener.UseTelepad;
@@ -25,6 +27,7 @@ public class Telepads extends JavaPlugin{
     public static Telepads INSTANCE;
     public DataBasePool basePool;
     public Events events;
+    public TeleportationManager teleportationManager;
 
     @Override
     public void onLoad() {
@@ -33,6 +36,7 @@ public class Telepads extends JavaPlugin{
 
         this.saveDefaultConfig();
 
+        teleportationManager = new TeleportationManager();
         basePool = new DataBasePool();
         basePool.init();
 
@@ -51,6 +55,7 @@ public class Telepads extends JavaPlugin{
         new GiveBuildItem();
         new GivePortableTeleportItem();
         new Admin();
+        new Teleportation();
     }
 
     @Override

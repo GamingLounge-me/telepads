@@ -103,3 +103,8 @@ PortableTelepad:
   RightClickFAVOTITE: "<white>Rechts Klick: Favorisieren</white>"
   FavoriteMarker: "<yellow>Favorit</yellow>"  
   
+#TPA and RTP logic:
+
+TPA:
+  AutoCancleInMinutes: "5"
+  DontMoveTimeInMill: "3000"
