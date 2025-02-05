@@ -14,25 +14,25 @@ public class Teleportation {
 
     public Teleportation(){
         new CommandAPICommand("tpa")
-        .withArguments(new PlayerArgument("player")
-        .withPermission("telepads.tpa")
-            .executesPlayer((executor,args)->{
-                Telepads.INSTANCE.teleportationManager.createTPA(executor, (Player) args.get("player"));
-        }))
-        .register();
+            .withArguments(new PlayerArgument("player")
+            .withPermission("telepads.tpa")
+                .executesPlayer((executor,args)->{
+                    Telepads.INSTANCE.teleportationManager.createTPA(executor.getPlayer(), (Player) args.get("player"));
+            }))
+            .register();
         new CommandAPICommand("tpaaccept")
             .withArguments(new PlayerArgument("player")
             .withPermission("telepads.tpa.accept")
                 .executesPlayer((executor,args)->{
-                    Telepads.INSTANCE.teleportationManager.acceptTPA(executor, (Player) args.get("player"));
+                    Telepads.INSTANCE.teleportationManager.acceptTPA(executor.getPlayer(), (Player) args.get("player"));
             }))
         .register();
         new CommandAPICommand("tpadecline")
-        .withArguments(new PlayerArgument("player")
-        .withPermission("telepads.tpa.accept")
-            .executesPlayer((executor,args)->{
-                Telepads.INSTANCE.teleportationManager.declineTPA(executor, (Player) args.get("player"));
-        }))
+            .withArguments(new PlayerArgument("player")
+            .withPermission("telepads.tpa.accept")
+                .executesPlayer((executor,args)->{
+                    Telepads.INSTANCE.teleportationManager.declineTPA(executor.getPlayer(), (Player) args.get("player"));
+            }))
     .register();
     }
 }
