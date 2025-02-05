@@ -13,7 +13,8 @@ public class Teleportation {
     String prefix = "<white>[</white><#ff0000>G<#ff1100>a<#ff2200>m<#ff3300>i<#ff4400>n<#ff5500>g<#ff6600>L<#ff7700>o<#ff8800>u<#ff9900>n<#ffaa00>g<#ffbb00>e<white>]</white> ";
 
     public Teleportation() {
-        new CommandAPICommand("tpa")
+        new CommandAPICommand("telepad:tpa")
+                .withAliases("tpa")
                 .withArguments(new PlayerArgument("player"))
                 .withPermission("telepads.tpa")
                 .executesPlayer((executor, args) -> {
@@ -22,7 +23,8 @@ public class Teleportation {
                 })
                 .register();
 
-        new CommandAPICommand("tpaaccept")
+        new CommandAPICommand("telepad:tpaaccept")
+                .withAliases("tpaaccept", "tpac")
                 .withArguments(new PlayerArgument("player"))
                 .withPermission("telepads.tpa.accept")
                 .executesPlayer((executor, args) -> {
@@ -31,7 +33,8 @@ public class Teleportation {
                 })
                 .register();
 
-        new CommandAPICommand("tpadecline")
+        new CommandAPICommand("telepad:tpadecline")
+                .withAliases("tpadecline", "tpad")
                 .withArguments(new PlayerArgument("player"))
                 .withPermission("telepads.tpa.accept")
                 .executesPlayer((executor, args) -> {
