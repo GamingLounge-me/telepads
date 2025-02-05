@@ -65,7 +65,7 @@ public class TeleportationManager {
     }
 
     // Method to add a player to the tpaList
-    public void addPlayerTotpaList(Entity target, Entity executor) {
+    public void addPlayerToTpaList(Entity target, Entity executor) {
         tpaList.computeIfAbsent(target, k -> new ArrayList<>()).add(executor);
     }
 
@@ -92,12 +92,12 @@ public class TeleportationManager {
         target.sendMessage(msg);
         executor.sendMessage(mm.deserialize(Language.getValue(telepads, executor, "tpa.send.sender", true),
                 Placeholder.component("player", target.displayName())));
-        addPlayerTotpaList(target, executor);
+        addPlayerToTpaList(target, executor);
 
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         ScheduledFuture<?> scheduledTask = scheduler.schedule(() -> {
             if (!tpaList.isEmpty()) {
-                removePlayerFromtpaList(target, executor);
+                removePlayerFromTpaList(target, executor);
                 executor.sendMessage(mm.deserialize(Language.getValue(telepads, target, "error.tpa.expired", true)));
             }
         }, Telepads.INSTANCE.getConfig().getLong("TPA.AutoCancleInSeconds"), TimeUnit.SECONDS);
@@ -118,7 +118,7 @@ public class TeleportationManager {
 
     public void declineTPA(Player executor, Player target) {
         if (tpaList.containsKey(executor) && tpaList.get(executor).contains(target)) {
-            removePlayerFromtpaList(executor, target);
+            removePlayerFromTpaList(executor, target);
             target.sendMessage(mm.deserialize(Language.getValue(telepads, target, "tpadeclined.sender", true),
                     Placeholder.component("player", executor.displayName())));
             executor.sendMessage(mm.deserialize(Language.getValue(telepads, executor, "tpadeclined.reciever", true),
@@ -130,7 +130,7 @@ public class TeleportationManager {
     }
 
     // Method to remove a player from the tpaList
-    public void removePlayerFromtpaList(Entity target, Entity executor) {
+    public void removePlayerFromTpaList(Entity target, Entity executor) {
         List<Entity> executors = tpaList.get(target);
         if (executors != null) {
             executors.remove(executor);
@@ -146,7 +146,7 @@ public class TeleportationManager {
 
         Location startLocation = target.getLocation();
 
-        removePlayerFromtpaList(executor, target);
+        removePlayerFromTpaList(executor, target);
 
         BukkitTask task = Bukkit.getScheduler().runTaskTimer(telepads, () -> {
 
