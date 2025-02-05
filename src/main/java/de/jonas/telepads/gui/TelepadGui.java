@@ -34,6 +34,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 public class TelepadGui implements InventoryHolder {
 
@@ -172,7 +173,8 @@ public class TelepadGui implements InventoryHolder {
                         }
 
                         Pattern ptm = Pattern.compile("[a-zA-Z0-9_ #:</>]{3,128}");
-                        if (ptm.matcher(message).matches()) {
+                        if (ptm.matcher(LegacyComponentSerializer.legacySection().serialize(mm.deserialize(message)))
+                                .matches()) {
                             DataBasePool.setName(db, tg.id, message);
                             player.sendMessage(mm.deserialize(conf.getString("Messages.renameTelepad"),
                                     Placeholder.component("name", mm.deserialize(message))));

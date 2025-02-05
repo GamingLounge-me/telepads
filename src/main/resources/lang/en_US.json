@@ -1,4 +1,16 @@
 {
     "prefix": "[Telepads]",
-    "error.player.hasTPA": "<red>This player already has an TPA from you!</red>"
+    "error.player.hasTPA": "<gradient:#af06d1:#f23400>You have already sent a TPA to this player</gradient><white>.</white> <gray>(canceled)</gray>",
+    "error.tpa.expired": "<gradient:#af06d1:#f23400>Your teleportation request has expired</gradient><white>.</white> <gray>(canceled)</gray>",
+    "error.noTPA": "<gradient:#af06d1:#f23400>You have no teleportation request from <gradient:#0400ff:#ff00e6><player></gradient></gradient><white>.</white> <gray>(canceled)</gray>",
+    "tpa.send.recipient": "<gradient:#0400ff:#ff00e6><player></gradient> <gradient:#48ff00:#b4ff29>has sent you a teleportation request<white>.</white></gradient><br><green><bold><accept>Accept</accept></bold></green> <gray>|</gray> <dark_red><decline><b>Decline</b></decline></dark_red>",
+    "tpa.send.sender": "<gradient:#48ff00:#b4ff29>You have sent a teleportation request to <gradient:#0400ff:#ff00e6><player></gradient><white>.</white></gradient> <gray>(successful)</gray>",
+    "tpa.acceped": "<gradient:#48ff00:#b4ff29>You accepted <gradient:#0400ff:#ff00e6><player></gradient> teleportation request<white>.</white></gradient> <gray>(successful)</gray>",
+    "tpadeclined.reciever": "<gradient:#48ff00:#b4ff29>You have declined the teleportation request from <gradient:#0400ff:#ff00e6><player></gradient><white>.</white></gradient> <gray>(successful)</gray>",
+    "tpadeclined.sender": "<gradient:#af06d1:#f23400>Your teleportation request to <gradient:#0400ff:#ff00e6><player></gradient> was declined</gradient><white>.</white> <gray>(canceled)</gray>",
+    "tpa.cancle.move": "<gradient:#af06d1:#f23400>You moved, so the teleportation request was canceled</gradient><white>.</white> <gray>(canceled)</gray>",
+    "tpa.countdown": "<shadow:#000000FF><b><aqua><countdown></aqua></b></shadow>",
+    "teleport.succefully": "<gradient:#48ff00:#b4ff29>You have been successfully teleported<white>.</white></gradient> <gray>(successful)</gray>",
+    "teleport.unsafe": "<gradient:#af06d1:#f23400>The teleportation was canceled because the position is not safe</gradient><white>.</white> <gray>(canceled)</gray>",
+    "error.player.is.sender": "<gradient:#af06d1:#f23400>You cannot teleport to yourself</gradient><white>.</white> <gray>(canceled)</gray>"
 }

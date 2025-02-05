@@ -102,9 +102,11 @@ PortableTelepad:
   LeftClickTELEPRT: "<white>Links Klick: Teleport</white>"
   RightClickFAVOTITE: "<white>Rechts Klick: Favorisieren</white>"
   FavoriteMarker: "<yellow>Favorit</yellow>"  
-  
-#TPA and RTP logic:
 
+#Teleport(TPA and RTP) logic:
 TPA:
-  AutoCancleInMinutes: "5"
-  DontMoveTimeInSec: "3"
+  AutoCancleInSeconds: 300
+  DontMoveTimeInSeconds: 3
+
+Teleport:
+  MoveTolerance: 1.5

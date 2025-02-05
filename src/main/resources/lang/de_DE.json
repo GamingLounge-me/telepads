@@ -1,4 +1,16 @@
 {
     "prefix": "[Telepads]",
-    "error.player.hasTPA": "<red>Du hast diesem Spieler bereits eine TPA gesendet.</red>"
+    "error.player.hasTPA": "<gradient:#af06d1:#f23400>Du hast diesem Spieler bereits eine TPA gesendet</gradient><white>.</white> <gray>(abbruch)</gray>",
+    "error.tpa.expired": "<gradient:#af06d1:#f23400>Deine Teleportationsanfrage ist abgelaufen</gradient><white>.</white> <gray>(abbruch)</gray>",
+    "error.noTPA": "<gradient:#af06d1:#f23400>Du hast keine Teleportationsanfrage von <gradient:#0400ff:#ff00e6><player></gradient></gradient><white>.</white> <gray>(abbruch)</gray>",
+    "tpa.send.recipient": "<gradient:#0400ff:#ff00e6><player></gradient> <gradient:#48ff00:#b4ff29>hat dir eine Teleportationsanfrage gesenden<white>.</white></gradient><br><green><bold><accept>Annehmen</accept></bold></green> <gray>|</gray> <dark_red><decline><b>Ablehnen</b></decline></dark_red>",
+    "tpa.send.sender": "<gradient:#48ff00:#b4ff29>Du hast <gradient:#0400ff:#ff00e6><player></gradient> eine Teleportationsanfrage gesenden<white>.</white></gradient> <gray>(erfolgreich)</gray>",
+    "tpa.acceped": "<gradient:#48ff00:#b4ff29>Du hast Teleportationsanfrage von <gradient:#0400ff:#ff00e6><player></gradient> angenommen<white>.</white></gradient> <gray>(erfolgreich)</gray>",
+    "tpadeclined.reciever": "<gradient:#48ff00:#b4ff29>Du hast die Teleportationsanfrage von <gradient:#0400ff:#ff00e6><player></gradient> abgelehnt<white>.</white></gradient> <gray>(erfolgreich)</gray>",
+    "tpadeclined.sender": "<gradient:#af06d1:#f23400>Deine Teleportationsanfrage an <gradient:#0400ff:#ff00e6><player></gradient> wurde abgelehnt</gradient><white>.</white> <gray>(abbruch)</gray>",
+    "tpa.cancle.move": "<gradient:#af06d1:#f23400>Du hast dich bewegt, deshalb wurde die Teleportationsanfrage abgebrochen</gradient><white>.</white> <gray>(abbruch)</gray>",
+    "tpa.countdown": "<shadow:#000000FF><b><aqua><countdown></aqua></b></shadow>",
+    "teleport.succefully": "<gradient:#48ff00:#b4ff29>Du wurdest erfolgreich teleportiert<white>.</white></gradient> <gray>(erfolgreich)</gray>",
+    "teleport.unsafe": "<gradient:#af06d1:#f23400>Die Teleportation wurde abgebrochen, weill die Position nicht sicher ist</gradient><white>.</white> <gray>(abbruch)</gray>",
+    "error.player.is.sender": "<gradient:#af06d1:#f23400>Du kannst dich nicht zu dir selbst teleportieren</gradient><white>.</white> <gray>(abbruch)</gray>"
 }

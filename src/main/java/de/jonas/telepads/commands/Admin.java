@@ -30,22 +30,21 @@ import dev.jorel.commandapi.CommandAPICommand;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
 public class Admin {
-    
+
     private static final ClickEvent adminTeleport = Admin::adminTeleportI;
 
     public Admin() {
         Telepads telepads = Telepads.INSTANCE;
         FileConfiguration conf = telepads.getConfig();
-        MiniMessage mm = MiniMessage.miniMessage();
 
         Stuff.INSTANCE.itemBuilderManager.addClickEvent(adminTeleport, "telepads:teleport_per_portable_gui");
 
         new CommandAPICommand("telepads:admin")
-            .withPermission(conf.getString("AdminPermission"))
-            .executesPlayer((player, arg) -> {
-                player.openInventory(new PagenationInventory(getItems()).getInventory());
-            })
-        .register();
+                .withPermission(conf.getString("AdminPermission"))
+                .executesPlayer((player, arg) -> {
+                    player.openInventory(new PagenationInventory(getItems()).getInventory());
+                })
+                .register();
     }
 
     private static void adminTeleportI(InventoryClickEvent e) {
@@ -53,24 +52,25 @@ public class Admin {
         DataBasePool db = Telepads.INSTANCE.basePool;
         e.setCancelled(true);
         e.getWhoClicked().closeInventory();
-        if (e.getCurrentItem() == null || e.getCurrentItem().getItemMeta() == null) return;
-        int id = e.getCurrentItem().getItemMeta().getPersistentDataContainer().get(Events.teleID, PersistentDataType.INTEGER);
-        Location l = DataBasePool.getlocation(db, id).add(0.5,1,0.5);
+        if (e.getCurrentItem() == null || e.getCurrentItem().getItemMeta() == null)
+            return;
+        int id = e.getCurrentItem().getItemMeta().getPersistentDataContainer().get(Events.teleID,
+                PersistentDataType.INTEGER);
+        Location l = DataBasePool.getlocation(db, id).add(0.5, 1, 0.5);
         e.getWhoClicked().teleport(l);
         new ParticleRunner(
-                    Telepads.INSTANCE,
-                    l,
-                    new SpiralEffect(2,
-                            1,
-                            2,
-                            new BuilderParticle(
-                                    new ParticleBuilder(Particle.DUST)
+                Telepads.INSTANCE,
+                l,
+                new SpiralEffect(2,
+                        1,
+                        2,
+                        new BuilderParticle(
+                                new ParticleBuilder(Particle.DUST)
                                         .count(1)
                                         .color(Color.PURPLE, 1f)
-                                        .source((Player) e.getWhoClicked()))
-                    ),
-                    2,
-                    10);
+                                        .source((Player) e.getWhoClicked()))),
+                2,
+                10);
     }
 
     public static List<ItemStack> getItems() {
@@ -82,10 +82,10 @@ public class Admin {
             for (int a : pads) {
                 String name = DataBasePool.getName(db, a);
                 ItemStack item = new ItemBuilder()
-                    .setMaterial(Material.BEACON)
-                    .setName(name)
-                    .whenClicked("telepads:teleport_per_portable_gui")
-                    .build();
+                        .setMaterial(Material.BEACON)
+                        .setName(name)
+                        .whenClicked("telepads:teleport_per_portable_gui")
+                        .build();
                 ItemMeta meta = item.getItemMeta();
                 meta.getPersistentDataContainer().set(Events.teleID, PersistentDataType.INTEGER, a);
                 item.setItemMeta(meta);
