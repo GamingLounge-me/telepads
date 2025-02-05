@@ -1,10 +1,10 @@
-package de.jonas.telepads.Teleportation;
+package de.jonas.telepads.teleportation;
 
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.List;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

@@ -11,7 +11,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import de.jonas.telepads.Teleportation.TeleportationManager;
+import de.jonas.telepads.teleportation.TeleportationManager;
 import de.jonas.telepads.commands.Admin;
 import de.jonas.telepads.commands.GiveBuildItem;
 import de.jonas.telepads.commands.GivePortableTeleportItem;
