@@ -107,4 +107,4 @@ PortableTelepad:
 
 TPA:
   AutoCancleInMinutes: "5"
-  DontMoveTimeInMill: "3000"
+  DontMoveTimeInSec: "3"

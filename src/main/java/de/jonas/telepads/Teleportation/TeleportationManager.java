@@ -16,9 +16,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
-import org.intellij.lang.annotations.Language;
 
-import de.jonas.stuff.Stuff;
 import de.jonas.telepads.Telepads;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -56,7 +54,7 @@ public class TeleportationManager {
 
     public void createTPA(Player executor, Player target) {
 
-        String tmp = "<aqua>Der spieler <player> hat dir eine TPA gesenden.</aqua><br><green><bold><accept>Annehmen</accept></bold></green> <gray>|</gray> <dark_red><decline>Ablehnen</decline></dark_red>";
+        String tmp = prefix+"<aqua>Der spieler <player> hat dir eine TPA gesenden.</aqua><br><green><bold><accept>Annehmen</accept></bold></green> <gray>|</gray> <dark_red><decline>Ablehnen</decline></dark_red>";
 
         Component msg = mm.deserialize(
                 tmp,
@@ -73,8 +71,9 @@ public class TeleportationManager {
         ScheduledFuture<?> scheduledTask = scheduler.schedule(() -> {
             if (!TPAList.isEmpty()) {
                 removePlayerFromTPAList(target, executor);
+                executor.sendMessage(mm.deserialize(prefix+"<red>Your tpa request has expired"));
             }
-        }, Telepads.INSTANCE.getConfig().getInt("TPA.AutoCancleInMinutes"), TimeUnit.MINUTES);
+        },3 /*(Integer)Telepads.INSTANCE.getConfig().getInt("TPA.AutoCancleInMinutes")*/, TimeUnit.MINUTES);
 
         // Check if the HashMap is empty and cancel the task if it is
         if (TPAList.isEmpty()) {
@@ -84,8 +83,7 @@ public class TeleportationManager {
 
     public void acceptTPA(Player executor, Player target) {
 
-        if (TPAList.get(target) != null && TPAList.get(target).contains(executor)) {
-            removePlayerFromTPAList(target, executor);
+        if (TPAList.containsKey(executor) && TPAList.get(executor).contains(target)) {
             teleportPlayer(executor, target);
         } else {
             executor.sendMessage(mm.deserialize("some error"));
@@ -93,8 +91,8 @@ public class TeleportationManager {
     }
 
     public void declineTPA(Player executor, Player target) {
-        if (TPAList.get(target) != null && TPAList.get(target).contains(executor)) {
-            removePlayerFromTPAList(target, executor);
+        if (TPAList.containsKey(executor) && TPAList.get(executor).contains(target)) {
+            removePlayerFromTPAList(executor, target);
             target.sendMessage(mm.deserialize(prefix + "<>"));
         } else {
             executor.sendMessage(mm.deserialize("some error"));
@@ -114,18 +112,21 @@ public class TeleportationManager {
 
     public void teleportPlayer(Player executor, Player target) {
 
-        BukkitTask task = Bukkit.getScheduler().runTaskTimer(telepads, () -> {
-            long startTime = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();
 
-            if (System.currentTimeMillis() - startTime >= Telepads.INSTANCE.getConfig()
-                    .getInt("TPA.DontMoveTimeInMill")) {
+        BukkitTask task = Bukkit.getScheduler().runTaskTimer(telepads, () -> {
+
+            if (System.currentTimeMillis() - startTime >= (Telepads.INSTANCE.getConfig()
+                    .getInt("TPA.DontMoveTimeInMill")*1000)) {
                 removePlayerFromTPAList(executor, target);
+                notMoveTimer.get(target).cancel();
                 notMoveTimer.remove(target);
                 teleport(target, executor.getLocation());
             }
 
             if (target.getVelocity().length() > 0.1) {
                 removePlayerFromTPAList(executor, target);
+                notMoveTimer.get(target).cancel();
                 notMoveTimer.remove(target);
                 target.sendMessage(
                         mm.deserialize("<gradient:#fa0000:#f73105>Your TPA got cancelt, cause you moved.</gradient>"));
