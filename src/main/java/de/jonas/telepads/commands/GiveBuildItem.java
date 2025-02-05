@@ -26,6 +26,7 @@ public class GiveBuildItem {
     DataBasePool db = telepads.basePool;
 
     public static final NamespacedKey telepadNum = new NamespacedKey("telepads", "identification_number");
+
     public final PlaceEvent buildTelepad = this::buildTelepadI;
 
     private void buildTelepadI(BlockPlaceEvent pv) {

@@ -17,3 +17,7 @@ dependencies:
       load: BEFORE
       required: false
       join-classpath: true
+    ConfigAPI:
+      load: BEFORE
+      required: true
+      join-classpath: true
