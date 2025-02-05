@@ -1,6 +1,9 @@
 package de.jonas.telepads;
 
+import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -19,6 +22,7 @@ import de.jonas.telepads.listener.PreventChangePad;
 import de.jonas.telepads.listener.UseTelepad;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
+import me.gaminglounge.configapi.LoadConfig;
 import net.milkbowl.vault.economy.Economy;
 
 public class Telepads extends JavaPlugin {
@@ -35,6 +39,10 @@ public class Telepads extends JavaPlugin {
         INSTANCE = this;
 
         this.saveDefaultConfig();
+
+        Map<String, InputStream> lang = new HashMap<>();
+        lang.put("en_US.json", this.getResource("lang/en_US.json"));
+        LoadConfig.registerLanguage(this, lang);
 
         if (!CommandAPI.isLoaded())
             CommandAPI.onLoad(new CommandAPIBukkitConfig(this));

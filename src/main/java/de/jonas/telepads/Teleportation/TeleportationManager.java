@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
 import de.jonas.telepads.Telepads;
+import me.gaminglounge.configapi.Language;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -55,7 +56,7 @@ public class TeleportationManager {
     public void createTPA(Player executor, Player target) {
 
         if (TPAList.containsKey(executor) && TPAList.get(executor).contains(target)) {
-            // send message like you already send player an tpa
+            executor.sendMessage(Language.getValue(telepads, executor, "error.player.hasTPA"));
             return;
         }
 

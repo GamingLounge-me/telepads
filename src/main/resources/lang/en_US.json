@@ -1,0 +1,4 @@
+{
+    "prefix": "[Telepads]",
+    "error.player.hasTPA": "<red>This player already has an TPA from you!</red>"
+}
