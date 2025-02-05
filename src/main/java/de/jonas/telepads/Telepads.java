@@ -42,6 +42,7 @@ public class Telepads extends JavaPlugin {
 
         Map<String, InputStream> lang = new HashMap<>();
         lang.put("en_US.json", this.getResource("lang/en_US.json"));
+        lang.put("de_DE.json", this.getResource("lang/de_DE.json"));
         LoadConfig.registerLanguage(this, lang);
 
         if (!CommandAPI.isLoaded())
