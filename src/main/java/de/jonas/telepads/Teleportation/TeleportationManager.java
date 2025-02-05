@@ -3,13 +3,8 @@ package de.jonas.telepads.Teleportation;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -17,7 +12,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitTask;
 
 import de.jonas.telepads.Telepads;
 import me.gaminglounge.configapi.Language;
@@ -33,7 +27,6 @@ public class TeleportationManager {
     Telepads telepads = Telepads.INSTANCE;
     MiniMessage mm = MiniMessage.miniMessage();
     private HashMap<Entity, List<Entity>> tpaList;
-    Map<Player, BukkitTask> notMoveTimer;
 
     private boolean isSafeLocation(Location location) {
         Block block = location.getBlock();
@@ -61,7 +54,6 @@ public class TeleportationManager {
 
     public TeleportationManager() {
         tpaList = new HashMap<>();
-        notMoveTimer = new HashMap<>();
     }
 
     // Method to add a player to the tpaList
@@ -94,18 +86,11 @@ public class TeleportationManager {
                 Placeholder.component("player", target.displayName())));
         addPlayerToTpaList(target, executor);
 
-        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        ScheduledFuture<?> scheduledTask = scheduler.schedule(() -> {
-            if (!tpaList.isEmpty()) {
-                removePlayerFromTpaList(target, executor);
+        Bukkit.getScheduler().runTaskLater(Telepads.INSTANCE, () -> {
+            if (removePlayerFromTpaList(target, executor)) {
                 executor.sendMessage(mm.deserialize(Language.getValue(telepads, target, "error.tpa.expired", true)));
             }
-        }, Telepads.INSTANCE.getConfig().getLong("TPA.AutoCancleInSeconds"), TimeUnit.SECONDS);
-
-        // Check if the HashMap is empty and cancel the task if it is
-        if (tpaList.isEmpty()) {
-            scheduledTask.cancel(false);
-        }
+        }, Telepads.INSTANCE.getConfig().getLong("TPA.AutoCancleInSeconds") * 20);
     }
 
     public void acceptTPA(Player executor, Player target) {
@@ -129,15 +114,24 @@ public class TeleportationManager {
         }
     }
 
-    // Method to remove a player from the tpaList
-    public void removePlayerFromTpaList(Entity target, Entity executor) {
+    /**
+     * 
+     * Method to remove a player from the tpaList
+     * 
+     * @param target   reciver of the TPA
+     * @param executor sender of the TPA
+     * @return if it could be removed
+     */
+    public boolean removePlayerFromTpaList(Entity target, Entity executor) {
         List<Entity> executors = tpaList.get(target);
         if (executors != null) {
-            executors.remove(executor);
+            boolean rtn = executors.remove(executor);
             if (executors.isEmpty()) {
                 tpaList.remove(target);
             }
+            return rtn;
         }
+        return false;
     }
 
     public void teleportPlayer(Player executor, Player target) {
@@ -148,19 +142,17 @@ public class TeleportationManager {
 
         removePlayerFromTpaList(executor, target);
 
-        BukkitTask task = Bukkit.getScheduler().runTaskTimer(telepads, () -> {
+        Bukkit.getScheduler().runTaskTimer(telepads, task -> {
 
             if (System.currentTimeMillis() >= teleportTime) {
-                notMoveTimer.get(target).cancel();
-                notMoveTimer.remove(target);
+                task.cancel();
                 teleport(target, executor.getLocation());
                 return;
             }
 
             if (startLocation.distance(target.getLocation()) > Telepads.INSTANCE.getConfig()
                     .getInt("Teleport.MoveTolerance")) {
-                notMoveTimer.get(target).cancel();
-                notMoveTimer.remove(target);
+                task.cancel();
                 target.sendMessage(
                         mm.deserialize(Language.getValue(telepads, target, "tpa.cancle.move", true)));
                 return;
@@ -175,7 +167,6 @@ public class TeleportationManager {
                     Times.times(Duration.ofMillis(125), Duration.ofMillis(450), Duration.ofMillis(125))));
 
         }, 0, 20);
-        notMoveTimer.put(target, task);
     }
 
     public void teleport(Player target, Location location) {
