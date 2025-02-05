@@ -38,7 +38,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 
 public class Events {
-    
+
     public static final NamespacedKey teleID = new NamespacedKey("telepads", "telepad_id");
 
     public static final ClickEvent closeInv = Events::closeInvI;
@@ -70,9 +70,9 @@ public class Events {
     }
 
     private static void closeInvI(InventoryClickEvent e) {
-		e.setCancelled(true);
+        e.setCancelled(true);
         e.getWhoClicked().closeInventory();
-	}
+    }
 
     private static void cancelEventI(InventoryClickEvent e) {
         e.setCancelled(true);
@@ -85,17 +85,19 @@ public class Events {
         PersistentDataContainer container = e.getCurrentItem().getItemMeta().getPersistentDataContainer();
         int idsource = container.get(TelepadGui.src, PersistentDataType.INTEGER);
         int id = container.get(TelepadGui.desti, PersistentDataType.INTEGER);
-    
+
         DataBasePool.setNewDestinationID(db, idsource, id);
         Component name = mm.deserialize(DataBasePool.getName(db, id));
         e.getWhoClicked().sendMessage(mm.deserialize("Du hast \"<desti>\" erfolgreich als Ziel gesetzt.",
-        Placeholder.component("desti", name)));
+                Placeholder.component("desti", name)));
         Location l = DataBasePool.getlocation(db, idsource);
-        l.add(0.5,2.5,0.5);
+        l.add(0.5, 2.5, 0.5);
         l.getNearbyEntitiesByType(TextDisplay.class, 0.1).forEach(display -> {
             PersistentDataContainer persis = display.getPersistentDataContainer();
-            if (!persis.has(GiveBuildItem.telepadNum)) return;
-            if (persis.get(GiveBuildItem.telepadNum, PersistentDataType.INTEGER) == idsource) display.remove();
+            if (!persis.has(GiveBuildItem.telepadNum))
+                return;
+            if (persis.get(GiveBuildItem.telepadNum, PersistentDataType.INTEGER) == idsource)
+                display.remove();
         });
         TextDisplay t = (TextDisplay) l.getWorld().spawnEntity(l, EntityType.TEXT_DISPLAY);
         t.text(name);
@@ -140,15 +142,15 @@ public class Events {
                     prof.complete();
                 }
                 ItemStack item = new ItemBuilder()
-                    .setSkull(a)
-                    .setName(prof.getName())
-                    .addLoreLine("Klicke um zu entfernen.")
-                    .whenClicked("telepads:remove_permittet_player")
-                    .build();
+                        .setSkull(a)
+                        .setName(prof.getName())
+                        .addLoreLine("Klicke um zu entfernen.")
+                        .whenClicked("telepads:remove_permittet_player")
+                        .build();
                 ItemMeta meta = item.getItemMeta();
                 meta.getPersistentDataContainer().set(teleID, PersistentDataType.INTEGER, pg.id);
                 item.setItemMeta(meta);
-                items.add(item);   
+                items.add(item);
             }
             e.getWhoClicked().openInventory(new PagenationInventory(items).getInventory());
         }
@@ -161,18 +163,21 @@ public class Events {
             e.setCancelled(true);
             e.getWhoClicked().closeInventory();
             new UseNextChatInput((Player) e.getWhoClicked())
-                .sendMessage("Schreibe den Spielernamne den du hinzufügen willst in den Chat.<br>Schreibe \"exit\" zum abzubrechen.")
-                .setChatEvent((player, message) -> {
-                    if (message.equalsIgnoreCase("exit")) {
-                      player.sendMessage("Abgebrochen");
-                      return;
-                    }
-                    DataBasePool.addPlayerPermission(db, pg.id, Bukkit.getOfflinePlayer(message).getUniqueId());
-                    player.sendMessage(mm.deserialize("Der Spieler \"<green><name></green>\" wurde für dieses Telepad gesetzt.",
-                    Placeholder.component("name", Component.text(Bukkit.getOfflinePlayer(message).getName()))));
-                    // player.sendMessage(mm.deserialize("<red>Ungültiger Name.</red>"));
-                })
-                .capture();
+                    .sendMessage(
+                            "Schreibe den Spielernamne den du hinzufügen willst in den Chat.<br>Schreibe \"exit\" zum abzubrechen.")
+                    .setChatEvent((player, message) -> {
+                        if (message.equalsIgnoreCase("exit")) {
+                            player.sendMessage("Abgebrochen");
+                            return;
+                        }
+                        DataBasePool.addPlayerPermission(db, pg.id, Bukkit.getOfflinePlayer(message).getUniqueId());
+                        player.sendMessage(mm.deserialize(
+                                "Der Spieler \"<green><name></green>\" wurde für dieses Telepad gesetzt.",
+                                Placeholder.component("name",
+                                        Component.text(Bukkit.getOfflinePlayer(message).getName()))));
+                        // player.sendMessage(mm.deserialize("<red>Ungültiger Name.</red>"));
+                    })
+                    .capture();
         }
     }
 
@@ -182,8 +187,11 @@ public class Events {
         ItemMeta meta = e.getCurrentItem().getItemMeta();
         SkullMeta skull = (SkullMeta) e.getCurrentItem().getItemMeta();
         e.setCancelled(true);
-        DataBasePool.removePlayerPermission(db, meta.getPersistentDataContainer().get(teleID, PersistentDataType.INTEGER), skull.getPlayerProfile().getId());
-        e.getWhoClicked().sendMessage(mm.deserialize("Der Spieler <green>\"" + skull.getPlayerProfile().getName() + "\"</green> wurde entfernt."));
+        DataBasePool.removePlayerPermission(db,
+                meta.getPersistentDataContainer().get(teleID, PersistentDataType.INTEGER),
+                skull.getPlayerProfile().getId());
+        e.getWhoClicked().sendMessage(mm.deserialize(
+                "Der Spieler <green>\"" + skull.getPlayerProfile().getName() + "\"</green> wurde entfernt."));
         if (e.getInventory().getHolder() instanceof PagenationInventory pg) {
             pg.items.remove(e.getCurrentItem());
             pg.fillPage(pg.currentpage);
@@ -204,14 +212,19 @@ public class Events {
         e.setCancelled(true);
         MiniMessage mm = MiniMessage.miniMessage();
         DataBasePool db = Telepads.INSTANCE.basePool;
-        if (e.getCurrentItem() == null || e.getCurrentItem().getItemMeta() == null) return;
+        if (e.getCurrentItem() == null || e.getCurrentItem().getItemMeta() == null)
+            return;
         int id = e.getCurrentItem().getItemMeta().getPersistentDataContainer().get(teleID, PersistentDataType.INTEGER);
         UUID playerUUID = e.getWhoClicked().getUniqueId();
         if (playerUUID == null) {
             e.getWhoClicked().closeInventory();
             e.getWhoClicked().sendMessage(mm.deserialize("Unexpected error (Events.java | favI)"));
         }
-        if (DataBasePool.getPlayerFavorite(db, playerUUID, id)) {DataBasePool.removePlayerFavorites(db, id, playerUUID);} else {DataBasePool.addPlayerFavorites(db, id, playerUUID);}
+        if (DataBasePool.getPlayerFavorite(db, playerUUID, id)) {
+            DataBasePool.removePlayerFavorites(db, id, playerUUID);
+        } else {
+            DataBasePool.addPlayerFavorites(db, id, playerUUID);
+        }
         if (e.getInventory().getHolder() instanceof PagenationInventory pgi) {
             pgi.reFillPage(GivePortableTeleportItem.getItems((Player) e.getWhoClicked()));
         }
@@ -224,28 +237,30 @@ public class Events {
         e.getWhoClicked().closeInventory();
         if (e.getInventory().getHolder() instanceof CustomizeGUI tg) {
             new UseNextChatInput((Player) e.getWhoClicked())
-                .sendMessage("Welcher soll dein neuer Anzeige Block sein?.<br>Schreibe \"exit\" oder \"abbrechen\" um den Vorgang abzubrechen.")
-                .setChatEvent((player, message) -> {
-                    if (message.equalsIgnoreCase("exit") || message.equalsIgnoreCase("abbrechen")) {
-                        player.sendMessage("Abgebrochen");
-                        return;
-                    }
-
-                    Pattern ptm = Pattern.compile("[a-zA-Z0-9_ ]{1,64}");   
-                    if(ptm.matcher(message).matches()) {
-                        Material mat = Material.matchMaterial(message.toUpperCase());
-                        if (mat == null) {
-                            player.sendMessage(mm.deserialize("<red>Dieser Block wurde nicht gefunden.</red>"));
+                    .sendMessage(
+                            "Welcher soll dein neuer Anzeige Block sein?.<br>Schreibe \"exit\" oder \"abbrechen\" um den Vorgang abzubrechen.")
+                    .setChatEvent((player, message) -> {
+                        if (message.equalsIgnoreCase("exit") || message.equalsIgnoreCase("abbrechen")) {
+                            player.sendMessage("Abgebrochen");
                             return;
                         }
-                        DataBasePool.setBlockID(db, tg.id, message);
-                        player.sendMessage(mm.deserialize("Dein Telepad Block wurde zu \"<green><name></green>\" geändert.",
-                        Placeholder.component("name", Component.text(message))));
-                    } else {
-                        player.sendMessage(mm.deserialize("<red>Dieser Block wurde nicht gefunden.</red>"));
-                    }
-                })
-            .capture();
+
+                        Pattern ptm = Pattern.compile("[a-zA-Z0-9_ ]{1,64}");
+                        if (ptm.matcher(message).matches()) {
+                            Material mat = Material.matchMaterial(message.toUpperCase());
+                            if (mat == null || !mat.isItem()) {
+                                player.sendMessage(mm.deserialize("<red>Dieses Item wurde nicht gefunden.</red>"));
+                                return;
+                            }
+                            DataBasePool.setBlockID(db, tg.id, message);
+                            player.sendMessage(
+                                    mm.deserialize("Dein Telepad Block wurde zu \"<green><name></green>\" geändert.",
+                                            Placeholder.component("name", Component.text(message))));
+                        } else {
+                            player.sendMessage(mm.deserialize("<red>Dieser Block wurde nicht gefunden.</red>"));
+                        }
+                    })
+                    .capture();
         }
     }
 }
