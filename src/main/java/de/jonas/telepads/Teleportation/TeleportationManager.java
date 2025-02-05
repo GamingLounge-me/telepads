@@ -54,6 +54,11 @@ public class TeleportationManager {
 
     public void createTPA(Player executor, Player target) {
 
+        if (TPAList.containsKey(executor) && TPAList.get(executor).contains(target)) {
+            // send message like you already send player an tpa
+            return;
+        }
+
         String tmp = prefix
                 + "<aqua>Der spieler <player> hat dir eine TPA gesenden.</aqua><br><green><bold><accept>Annehmen</accept></bold></green> <gray>|</gray> <dark_red><decline>Ablehnen</decline></dark_red>";
 
