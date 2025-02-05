@@ -16,9 +16,14 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
+import org.intellij.lang.annotations.Language;
 
+import de.jonas.stuff.Stuff;
 import de.jonas.telepads.Telepads;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 
 public class TeleportationManager {
 
@@ -51,8 +56,17 @@ public class TeleportationManager {
 
     public void createTPA(Player executor, Player target) {
 
-        target.sendMessage(mm.deserialize("<aqua>The player " + executor.getName()
-                + " has send you a Teleportation request. </aqua><br><green><bold><click:run_command:/tpa accept>Accept</click></bold></green> <gray>|</gray> <dark_red><click:run_command:/tpa accept>Decline</click></dark_red>"));
+        String tmp = "<aqua>Der spieler <player> hat dir eine TPA gesenden.</aqua><br><green><bold><accept>Annehmen</accept></bold></green> <gray>|</gray> <dark_red><decline>Ablehnen</decline></dark_red>";
+
+        Component msg = mm.deserialize(
+                tmp,
+                Placeholder.styling("accept",
+                        ClickEvent.runCommand("/telepad:tpaaccept " + executor.getName())),
+                Placeholder.styling("decline",
+                        ClickEvent.runCommand("/telepad:tpadecline " + executor.getName())),
+                Placeholder.component("player", executor.displayName()));
+
+        target.sendMessage(msg);
         addPlayerToTPAList(target, executor);
 
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -73,6 +87,8 @@ public class TeleportationManager {
         if (TPAList.get(target) != null && TPAList.get(target).contains(executor)) {
             removePlayerFromTPAList(target, executor);
             teleportPlayer(executor, target);
+        } else {
+            executor.sendMessage(mm.deserialize("some error"));
         }
     }
 
@@ -80,6 +96,8 @@ public class TeleportationManager {
         if (TPAList.get(target) != null && TPAList.get(target).contains(executor)) {
             removePlayerFromTPAList(target, executor);
             target.sendMessage(mm.deserialize(prefix + "<>"));
+        } else {
+            executor.sendMessage(mm.deserialize("some error"));
         }
     }
 
