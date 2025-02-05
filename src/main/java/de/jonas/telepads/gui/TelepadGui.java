@@ -41,92 +41,12 @@ public class TelepadGui implements InventoryHolder {
     Telepads telepads = Telepads.INSTANCE;
     FileConfiguration conf = telepads.getConfig();
     DataBasePool db = telepads.basePool;
-    Location location, destination;
-    public int id;
-    UUID owner;
-    public int level;
-    public Inventory telepadGui;
-    String destiName;
 
     public static final NamespacedKey desti = new NamespacedKey("telepads", "destination");
     public static final NamespacedKey src = new NamespacedKey("telepads", "source");
 
-    static ClickEvent changeName = TelepadGui::changeNameI;
-    static ClickEvent pickUp = TelepadGui::pickUpI;
-    static ClickEvent openDestinationGui = TelepadGui::openDestinationGuiI;
-    static ClickEvent levelUp = TelepadGui::levelUpI;
-
     public TelepadGui(Player p, int idC) {
-        MiniMessage mm = MiniMessage.miniMessage();
-
-        id = idC;
-        location = DataBasePool.getlocation(db, id);
-        String name = DataBasePool.getName(db, id);
-        owner = DataBasePool.getOwner(db, id);
-        level = DataBasePool.getLevel(db, id);
-        destiName = DataBasePool.getDestinationName(db, id);
-        destination = DataBasePool.getDestination(db, id);
-        List<Component> lore = new ArrayList<>();
-        if (destination != null) {
-            lore.add(mm.deserialize("<white>" + destiName + "</white>").decoration(TextDecoration.ITALIC, false));
-            lore.add(mm.deserialize("<white>" + destination.getWorld().getName() + "</white>")
-                    .decoration(TextDecoration.ITALIC, false));
-            lore.add(mm.deserialize("<white>X: " + destination.getBlockX() + "</white>")
-                    .decoration(TextDecoration.ITALIC, false));
-            lore.add(mm.deserialize("<white>Y: " + destination.getBlockY() + "</white>")
-                    .decoration(TextDecoration.ITALIC, false));
-            lore.add(mm.deserialize("<white>Z: " + destination.getBlockZ() + "</white>")
-                    .decoration(TextDecoration.ITALIC, false));
-        } else {
-            lore.add(mm.deserialize(conf.getString("Messages.setDestination")));
-        }
-
         this.telepadGui = Bukkit.createInventory(this, (3 * 9), mm.deserialize(name));
-
-        Stuff.INSTANCE.itemBuilderManager.addClickEvent(changeName, "telepads:click_change_name");
-        Stuff.INSTANCE.itemBuilderManager.addClickEvent(pickUp, "telepads:pick_telepad_up");
-        Stuff.INSTANCE.itemBuilderManager.addClickEvent(openDestinationGui, "telepad:open_initial_destination_gui");
-        Stuff.INSTANCE.itemBuilderManager.addClickEvent(levelUp, "telepad:pad_level_up");
-
-        int[] place = { 0, 1, 2, 3, 5, 6, 7, 8, 9, 11, 13, 15, 17, 18, 19, 20, 21, 23, 24, 25, 26 };
-        for (int a : place) {
-            telepadGui.setItem(a,
-                    new ItemBuilder()
-                            .setMaterial(Material.GRAY_STAINED_GLASS_PANE)
-                            .setName("")
-                            .whenClicked("telepads:cancelevent")
-                            .build());
-        }
-
-        telepadGui.setItem(4,
-                new ItemBuilder()
-                        .setMaterial(Material.getMaterial(conf.getString("TelepadGUI.customizer.block").toUpperCase()))
-                        .setName(conf.getString("TelepadGUI.customizer.name"))
-                        .addLoreLine(conf.getString("TelepadGUI.customizer.lore"))
-                        .whenClicked("telepads:open_customizer_gui")
-                        .build());
-
-        telepadGui.setItem(14,
-                new ItemBuilder()
-                        .setMaterial(Material.getMaterial(conf.getString("TelepadGUI.destination.block").toUpperCase()))
-                        .setName(conf.getString("TelepadGUI.destination.name"))
-                        .setLore(lore)
-                        .whenClicked("telepad:open_initial_destination_gui")
-                        .build());
-
-        telepadGui.setItem(10,
-                new ItemBuilder()
-                        .setMaterial(Material.getMaterial(conf.getString("TelepadGUI.pickup.block").toUpperCase()))
-                        .setName(conf.getString("TelepadGUI.pickup.name"))
-                        .whenClicked("telepads:pick_telepad_up")
-                        .build());
-
-        telepadGui.setItem(12,
-                new ItemBuilder()
-                        .setMaterial(Material.getMaterial(conf.getString("TelepadGUI.publicity.block").toUpperCase()))
-                        .setName(conf.getString("TelepadGUI.publicity.name"))
-                        .whenClicked("telepads:open_publish_gui")
-                        .build());
 
         telepadGui.setItem(22,
                 new ItemBuilder()
@@ -154,85 +74,6 @@ public class TelepadGui implements InventoryHolder {
                         .whenClicked("telepad:pad_level_up")
                         .build());
 
-    }
-
-    private static void changeNameI(InventoryClickEvent e) {
-        MiniMessage mm = MiniMessage.miniMessage();
-        Telepads telepads = Telepads.INSTANCE;
-        FileConfiguration conf = telepads.getConfig();
-        DataBasePool db = telepads.basePool;
-        e.getWhoClicked().closeInventory();
-        if (e.getInventory().getHolder() instanceof CustomizeGUI tg) {
-            new UseNextChatInput((Player) e.getWhoClicked())
-                    .sendMessage(conf.getString("TelepadGUI.customizer.telepadname.question"))
-                    .setChatEvent((player, message) -> {
-                        if (conf.getStringList("TelepadGUI.customizer.telepadname.exitWords").contains(message)) {
-                            player.sendMessage(conf.getString("Messages.exitChatInput"));
-                            return;
-                        }
-
-                        Pattern ptm = Pattern.compile("[a-zA-Z0-9_ #:</>]{3,128}");
-                        if (ptm.matcher(message).matches()) {
-                            DataBasePool.setName(db, tg.id, message);
-                            player.sendMessage(mm.deserialize(conf.getString("Messages.renameTelepad"),
-                                    Placeholder.component("name", mm.deserialize(message))));
-                        } else {
-                            player.sendMessage(mm.deserialize(conf.getString("Messages.regex")));
-                        }
-                    })
-                    .capture();
-        }
-    }
-
-    private static void pickUpI(InventoryClickEvent e) {
-        MiniMessage mm = MiniMessage.miniMessage();
-        Telepads telepads = Telepads.INSTANCE;
-        FileConfiguration conf = telepads.getConfig();
-        DataBasePool db = telepads.basePool;
-        TelepadGui gui = (TelepadGui) e.getInventory().getHolder(false);
-        UUID owner = DataBasePool.getOwner(db, gui.id);
-        Location location = DataBasePool.getlocation(db, gui.id);
-        if (e.getWhoClicked().getUniqueId().equals(owner)
-                || e.getWhoClicked().hasPermission(conf.getString("AdminPermission"))) {
-            if (e.getWhoClicked().getInventory().firstEmpty() == -1) {
-                e.getWhoClicked().sendMessage(mm.deserialize(conf.getString("Messages.invFull")));
-                return;
-            }
-            e.getWhoClicked().closeInventory();
-            DataBasePool.removeTelepadsDestinationWithDestination(db, gui.id);
-            DataBasePool.removeTelepad(db, gui.id);
-            location.clone().add(0.5, 2.5, 0.5).getNearbyEntitiesByType(TextDisplay.class, 0.1).forEach(display -> {
-                PersistentDataContainer persis = display.getPersistentDataContainer();
-                if (!persis.has(GiveBuildItem.telepadNum))
-                    return;
-                if (persis.get(GiveBuildItem.telepadNum, PersistentDataType.INTEGER) == gui.id)
-                    display.remove();
-            });
-            location.getWorld().setType(location, Material.AIR);
-            location.getWorld().setType(location.clone().add(1, 0, 1), Material.AIR);
-            location.getWorld().setType(location.clone().add(1, 0, 0), Material.AIR);
-            location.getWorld().setType(location.clone().add(1, 0, -1), Material.AIR);
-            location.getWorld().setType(location.clone().add(0, 0, 1), Material.AIR);
-            location.getWorld().setType(location.clone().add(0, 0, -1), Material.AIR);
-            location.getWorld().setType(location.clone().add(-1, 0, -1), Material.AIR);
-            location.getWorld().setType(location.clone().add(-1, 0, 0), Material.AIR);
-            location.getWorld().setType(location.clone().add(-1, 0, 1), Material.AIR);
-            e.getWhoClicked().getInventory().addItem(
-                    new ItemBuilder()
-                            .setMaterial(Material.BEACON)
-                            .setName("Telepad")
-                            .whenPlaced("telepads:buildTelepad")
-                            .build());
-            Double cost = conf.getDouble("TelepadGUI.levelup.cost");
-            if (gui.level >= 2 && cost != 0) {
-                Telepads.getEconomy().depositPlayer((OfflinePlayer) e.getWhoClicked(), cost);
-                e.getWhoClicked().sendMessage(mm.deserialize(conf.getString("Messages.pickupRegainMoney"),
-                        Placeholder.component("cost", Component.text(cost))));
-            }
-            e.getWhoClicked().sendMessage(mm.deserialize(conf.getString("Messages.pickup")));
-        } else {
-            e.getWhoClicked().sendMessage(mm.deserialize(conf.getString("Messages.noPerms")));
-        }
     }
 
     private static void openDestinationGuiI(InventoryClickEvent e) {

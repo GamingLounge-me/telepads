@@ -127,4 +127,11 @@ public class TeleportationManager {
         }
     }
 
+    public void RTP(Player executor) {
+
+    }
+
+    public void checkRTPLocation() {
+
+    }
 }
