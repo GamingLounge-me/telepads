@@ -36,6 +36,8 @@ public class Telepads extends JavaPlugin{
 
         this.saveDefaultConfig();
 
+        if (!CommandAPI.isLoaded()) CommandAPI.onLoad(new CommandAPIBukkitConfig(this));
+
         teleportationManager = new TeleportationManager();
         basePool = new DataBasePool();
         basePool.init();
@@ -50,12 +52,6 @@ public class Telepads extends JavaPlugin{
         
         events = new Events();
 
-        if (!CommandAPI.isLoaded()) CommandAPI.onLoad(new CommandAPIBukkitConfig(this));
-        new ReloadCommand();   
-        new GiveBuildItem();
-        new GivePortableTeleportItem();
-        new Admin();
-        new Teleportation();
     }
 
     @Override
@@ -65,6 +61,12 @@ public class Telepads extends JavaPlugin{
 
         CommandAPI.onEnable();
 
+        new ReloadCommand();   
+        new GiveBuildItem();
+        new GivePortableTeleportItem();
+        new Admin();
+        new Teleportation();
+        
         if (!setupEconomy()) getLogger().log(Level.WARNING, "Economy wasnt setupped correctly, have you installed Vault and an Eco-plugin?");
 
     }
