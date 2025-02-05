@@ -54,7 +54,8 @@ public class TeleportationManager {
 
     public void createTPA(Player executor, Player target) {
 
-        String tmp = prefix+"<aqua>Der spieler <player> hat dir eine TPA gesenden.</aqua><br><green><bold><accept>Annehmen</accept></bold></green> <gray>|</gray> <dark_red><decline>Ablehnen</decline></dark_red>";
+        String tmp = prefix
+                + "<aqua>Der spieler <player> hat dir eine TPA gesenden.</aqua><br><green><bold><accept>Annehmen</accept></bold></green> <gray>|</gray> <dark_red><decline>Ablehnen</decline></dark_red>";
 
         Component msg = mm.deserialize(
                 tmp,
@@ -71,9 +72,9 @@ public class TeleportationManager {
         ScheduledFuture<?> scheduledTask = scheduler.schedule(() -> {
             if (!TPAList.isEmpty()) {
                 removePlayerFromTPAList(target, executor);
-                executor.sendMessage(mm.deserialize(prefix+"<red>Your tpa request has expired"));
+                executor.sendMessage(mm.deserialize(prefix + "<red>Your tpa request has expired"));
             }
-        },3 /*(Integer)Telepads.INSTANCE.getConfig().getInt("TPA.AutoCancleInMinutes")*/, TimeUnit.MINUTES);
+        }, 3 /* (Integer)Telepads.INSTANCE.getConfig().getInt("TPA.AutoCancleInMinutes") */, TimeUnit.MINUTES);
 
         // Check if the HashMap is empty and cancel the task if it is
         if (TPAList.isEmpty()) {
@@ -112,12 +113,12 @@ public class TeleportationManager {
 
     public void teleportPlayer(Player executor, Player target) {
 
-        long startTime = System.currentTimeMillis();
+        Long teleportTime = System.currentTimeMillis()
+                + Telepads.INSTANCE.getConfig().getLong("TPA.DontMoveTimeInSec") * 1_000;
 
         BukkitTask task = Bukkit.getScheduler().runTaskTimer(telepads, () -> {
 
-            if (System.currentTimeMillis() - startTime >= (Telepads.INSTANCE.getConfig()
-                    .getInt("TPA.DontMoveTimeInMill")*1000)) {
+            if (System.currentTimeMillis() >= teleportTime) {
                 removePlayerFromTPAList(executor, target);
                 notMoveTimer.get(target).cancel();
                 notMoveTimer.remove(target);
@@ -133,6 +134,9 @@ public class TeleportationManager {
                 return;
             }
             // could add a title and sound, that get's send every sec
+
+            System.err.println("awdawd");
+
         }, 0, 20);
         notMoveTimer.put(target, task);
     }
