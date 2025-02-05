@@ -134,9 +134,6 @@ public class TeleportationManager {
                 return;
             }
             // could add a title and sound, that get's send every sec
-
-            System.err.println("awdawd");
-
         }, 0, 20);
         notMoveTimer.put(target, task);
     }
