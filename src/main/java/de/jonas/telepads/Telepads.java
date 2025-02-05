@@ -21,8 +21,8 @@ import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
 import net.milkbowl.vault.economy.Economy;
 
-public class Telepads extends JavaPlugin{
-    
+public class Telepads extends JavaPlugin {
+
     private static Economy econ = null;
     public static Telepads INSTANCE;
     public DataBasePool basePool;
@@ -36,9 +36,9 @@ public class Telepads extends JavaPlugin{
 
         this.saveDefaultConfig();
 
-        if (!CommandAPI.isLoaded()) CommandAPI.onLoad(new CommandAPIBukkitConfig(this));
+        if (!CommandAPI.isLoaded())
+            CommandAPI.onLoad(new CommandAPIBukkitConfig(this));
 
-        teleportationManager = new TeleportationManager();
         basePool = new DataBasePool();
         basePool.init();
 
@@ -49,8 +49,16 @@ public class Telepads extends JavaPlugin{
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        
+
         events = new Events();
+
+        teleportationManager = new TeleportationManager();
+
+        new ReloadCommand();
+        new GiveBuildItem();
+        new GivePortableTeleportItem();
+        new Admin();
+        new Teleportation();
 
     }
 
@@ -61,13 +69,9 @@ public class Telepads extends JavaPlugin{
 
         CommandAPI.onEnable();
 
-        new ReloadCommand();   
-        new GiveBuildItem();
-        new GivePortableTeleportItem();
-        new Admin();
-        new Teleportation();
-        
-        if (!setupEconomy()) getLogger().log(Level.WARNING, "Economy wasnt setupped correctly, have you installed Vault and an Eco-plugin?");
+        if (!setupEconomy())
+            getLogger().log(Level.WARNING,
+                    "Economy wasnt setupped correctly, have you installed Vault and an Eco-plugin?");
 
     }
 
