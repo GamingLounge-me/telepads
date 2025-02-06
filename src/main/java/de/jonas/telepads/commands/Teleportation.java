@@ -16,7 +16,7 @@ public class Teleportation {
                 .withArguments(new PlayerArgument("player").replaceSafeSuggestions(
                         SafeSuggestions.suggest(info -> Bukkit.getOnlinePlayers()
                                 .toArray(new Player[0]))))
-                .withPermission("telepads.tpa")
+                .withPermission("telepads.tpa.tpa")
                 .executesPlayer((executor, args) -> {
                     Telepads.INSTANCE.teleportationManager.createTPA(executor.getPlayer(),
                             (Player) args.get("player"));
@@ -40,7 +40,7 @@ public class Teleportation {
                 .withArguments(new PlayerArgument("player").replaceSafeSuggestions(
                         SafeSuggestions.suggest(info -> Bukkit.getOnlinePlayers()
                                 .toArray(new Player[0]))))
-                .withPermission("telepads.tpa.accept")
+                .withPermission("telepads.tpa.decline")
                 .executesPlayer((executor, args) -> {
                     Telepads.INSTANCE.teleportationManager.declineTPA(executor.getPlayer(),
                             (Player) args.get("player"));
