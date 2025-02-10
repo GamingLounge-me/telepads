@@ -245,7 +245,7 @@ public class Events {
                             return;
                         }
 
-                        Pattern ptm = Pattern.compile("[a-zA-Z0-9_ ]{1,64}");
+                        Pattern ptm = Pattern.compile("[a-zA-Z_]{1,64}");
                         if (ptm.matcher(message).matches()) {
                             Material mat = Material.matchMaterial(message.toUpperCase());
                             if (mat == null || !mat.isItem()) {
@@ -257,7 +257,7 @@ public class Events {
                                     mm.deserialize("Dein Telepad Block wurde zu \"<green><name></green>\" geändert.",
                                             Placeholder.component("name", Component.text(message))));
                         } else {
-                            player.sendMessage(mm.deserialize("<red>Dieser Block wurde nicht gefunden.</red>"));
+                            player.sendMessage(mm.deserialize("<red>Dieses Item wurde nicht gefunden.</red>"));
                         }
                     })
                     .capture();
