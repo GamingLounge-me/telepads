@@ -1,9 +1,26 @@
 plugins {
     id 'java'
+    id 'me.qoomon.git-versioning' version '6.4.4'
 }
 
 group = 'de.jonas'
-version = '3.2'
+version = '0.0.0'
+gitVersioning.apply{
+    refs {
+        tag('v(?<version>.*)') {
+            version = '${ref.version}'
+        }
+        tag('dev(?<version>.*)') {
+            version = 'dev${ref.version}'
+        }
+        branch('.*') {
+            version = '${ref}-${commit.short}-SNAPSHOT'
+        }
+    }
+    rev {
+        version = '${commit}'
+    }
+}
 
 repositories {
     mavenCentral()
@@ -23,12 +40,18 @@ repositories {
         url = uri("https://repo.codemc.io/repository/maven-public/")
     }
     maven { url 'https://jitpack.io' }
+    maven {
+        name = "gamingloungeMeGaminglounge"
+        url = uri("https://maven.gaminglounge.me/gaminglounge")
+    }
 }
 
 dependencies {
     compileOnly "io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT"
     compileOnly files("build/libs/Stuff-5.0.jar")
-    compileOnly files("build/libs/ConfigAPI-0.0.jar")
+    implementation("me.gaminglounge:gui-api:1.0.1")
+    implementation("me.gaminglounge:item-builder:1.0.0")
+    implementation("me.gaminglounge:config-api:1.1.0")
     implementation "dev.jorel:commandapi-bukkit-shade-mojang-mapped:9.7.0"
     implementation('com.zaxxer:HikariCP:5.1.0')
     implementation('org.mariadb.jdbc:mariadb-java-client:3.3.2') {
