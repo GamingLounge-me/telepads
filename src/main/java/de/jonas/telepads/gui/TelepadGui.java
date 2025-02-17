@@ -25,16 +25,15 @@ import org.jetbrains.annotations.NotNull;
 import de.jonas.stuff.Stuff;
 import de.jonas.stuff.interfaced.ClickEvent;
 import de.jonas.stuff.utility.ItemBuilder;
-import de.jonas.stuff.utility.PagenationInventory;
 import de.jonas.stuff.utility.UseNextChatInput;
 import de.jonas.telepads.DataBasePool;
 import de.jonas.telepads.Telepads;
 import de.jonas.telepads.commands.GiveBuildItem;
+import me.gaminglounge.guiapi.Pagenation;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
 public class TelepadGui implements InventoryHolder {
@@ -266,7 +265,7 @@ public class TelepadGui implements InventoryHolder {
                 list.add(item);
             }
             e.getWhoClicked().openInventory(
-                    new PagenationInventory(list).getInventory());
+                    new Pagenation((Player) e.getWhoClicked()).setItems(list).getInventory());
         }
     }
 

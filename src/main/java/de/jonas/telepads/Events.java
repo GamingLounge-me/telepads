@@ -26,13 +26,13 @@ import de.jonas.stuff.Stuff;
 import de.jonas.stuff.interfaced.ClickEvent;
 import de.jonas.stuff.interfaced.RightClickEvent;
 import de.jonas.stuff.utility.ItemBuilder;
-import de.jonas.stuff.utility.PagenationInventory;
 import de.jonas.stuff.utility.UseNextChatInput;
 import de.jonas.telepads.commands.GiveBuildItem;
 import de.jonas.telepads.commands.GivePortableTeleportItem;
 import de.jonas.telepads.gui.CustomizeGUI;
 import de.jonas.telepads.gui.PublishGUI;
 import de.jonas.telepads.gui.TelepadGui;
+import me.gaminglounge.guiapi.Pagenation;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
@@ -152,7 +152,7 @@ public class Events {
                 item.setItemMeta(meta);
                 items.add(item);
             }
-            e.getWhoClicked().openInventory(new PagenationInventory(items).getInventory());
+            e.getWhoClicked().openInventory(new Pagenation((Player) e.getWhoClicked()).setItems(items).getInventory());
         }
     }
 
@@ -192,7 +192,7 @@ public class Events {
                 skull.getPlayerProfile().getId());
         e.getWhoClicked().sendMessage(mm.deserialize(
                 "Der Spieler <green>\"" + skull.getPlayerProfile().getName() + "\"</green> wurde entfernt."));
-        if (e.getInventory().getHolder() instanceof PagenationInventory pg) {
+        if (e.getInventory().getHolder() instanceof Pagenation pg) {
             pg.items.remove(e.getCurrentItem());
             pg.fillPage(pg.currentpage);
         }
@@ -225,8 +225,9 @@ public class Events {
         } else {
             DataBasePool.addPlayerFavorites(db, id, playerUUID);
         }
-        if (e.getInventory().getHolder() instanceof PagenationInventory pgi) {
-            pgi.reFillPage(GivePortableTeleportItem.getItems((Player) e.getWhoClicked()));
+        if (e.getInventory().getHolder() instanceof Pagenation pgi) {
+            pgi.setItems(GivePortableTeleportItem.getItems((Player) e.getWhoClicked()));
+            pgi.fillPage(pgi.currentpage);
         }
     }
 

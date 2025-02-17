@@ -19,7 +19,6 @@ import com.destroystokyo.paper.ParticleBuilder;
 import de.jonas.stuff.Stuff;
 import de.jonas.stuff.interfaced.ClickEvent;
 import de.jonas.stuff.utility.ItemBuilder;
-import de.jonas.stuff.utility.PagenationInventory;
 import de.jonas.telepads.DataBasePool;
 import de.jonas.telepads.Events;
 import de.jonas.telepads.Telepads;
@@ -27,6 +26,7 @@ import de.jonas.telepads.particle.ParticleRunner;
 import de.jonas.telepads.particle.effects.SpiralEffect;
 import de.jonas.telepads.particle.spawner.BuilderParticle;
 import dev.jorel.commandapi.CommandAPICommand;
+import me.gaminglounge.guiapi.Pagenation;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
 public class Admin {
@@ -42,7 +42,7 @@ public class Admin {
         new CommandAPICommand("telepads:admin")
                 .withPermission(conf.getString("AdminPermission"))
                 .executesPlayer((player, arg) -> {
-                    player.openInventory(new PagenationInventory(getItems()).getInventory());
+                    player.openInventory(new Pagenation(player).setItems(getItems()).getInventory());
                 })
                 .register();
     }
