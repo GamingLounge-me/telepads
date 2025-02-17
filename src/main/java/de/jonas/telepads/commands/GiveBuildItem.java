@@ -12,10 +12,11 @@ import org.bukkit.persistence.PersistentDataType;
 
 import de.jonas.stuff.Stuff;
 import de.jonas.stuff.interfaced.PlaceEvent;
-import de.jonas.stuff.utility.ItemBuilder;
 import de.jonas.telepads.DataBasePool;
 import de.jonas.telepads.Telepads;
 import dev.jorel.commandapi.CommandAPICommand;
+import me.gaminglounge.itembuilder.ItemBuilder;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
 public class GiveBuildItem {
@@ -81,10 +82,9 @@ public class GiveBuildItem {
                 .withPermission(conf.getString("GiveBuildItem.permission"))
                 .withAliases(conf.getStringList("GiveBuildItem.aliases").toArray(num -> new String[num]))
                 .executesPlayer((player, arg) -> {
-                    player.getInventory().addItem(new ItemBuilder()
-                            .setMaterial(Material.BEACON)
-                            .setName("Telepad")
-                            .whenPlaced("telepads:buildTelepad")
+                    player.getInventory().addItem(new ItemBuilder(Material.BEACON)
+                            .setName(Component.text("Telepad"))
+                            .addBlockPlaceEvent("telepads:buildTelepad")
                             .build());
                 })
                 .register();

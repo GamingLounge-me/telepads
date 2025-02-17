@@ -58,14 +58,11 @@ CommonPage:
 TelepadGUI:
   pickup:
     name: "Aufheben"
-    block: "red_dye"
   levelup:
     name: "Aufwerten"
-    block: "emerald" 
     cost: 200
   customizer:
     name: "Anpassungen"
-    block: "anvil"
     lore: "Name und Anzeige Block"
     blocktype:
       name: "Anzeige Block"
@@ -75,25 +72,20 @@ TelepadGUI:
         - "abbrechen"
     telepadname:
       name: "Klicken zum Namen ändern."
-      block: "NAME_TAG"
       question: "Wie möchtest du dein Telepad nennen?.<br>Schreibe \"exit\" oder \"abbrechen\" um den Vorgang abzubrechen."
       exitWords:
         - "exit"
         - "abbrechen"
   destination:
     name: "Ziel"
-    block: "grass_block"
   publicity:
     name: "Sichtbarkeit"
-    block: "ENDER_EYE"
     list:
       name: "Spieler Liste"
-      block: "paper"
       removePlayer:
         name: "Klicke um zu entfernen."
     add:
       name: "Spieler hinzufügen"
-      block: "player_head"
       question: "Schreibe den Spielernamne den du hinzufügen willst in den Chat.<br>Schreibe \"exit\" zum abzubrechen."
       exitWords:
         - exit

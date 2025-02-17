@@ -25,7 +25,6 @@ import com.destroystokyo.paper.profile.PlayerProfile;
 import de.jonas.stuff.Stuff;
 import de.jonas.stuff.interfaced.ClickEvent;
 import de.jonas.stuff.interfaced.RightClickEvent;
-import de.jonas.stuff.utility.ItemBuilder;
 import de.jonas.stuff.utility.UseNextChatInput;
 import de.jonas.telepads.commands.GiveBuildItem;
 import de.jonas.telepads.commands.GivePortableTeleportItem;
@@ -33,6 +32,7 @@ import de.jonas.telepads.gui.CustomizeGUI;
 import de.jonas.telepads.gui.PublishGUI;
 import de.jonas.telepads.gui.TelepadGui;
 import me.gaminglounge.guiapi.Pagenation;
+import me.gaminglounge.itembuilder.ItemBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
@@ -141,11 +141,10 @@ public class Events {
                 if (!prof.completeFromCache()) {
                     prof.complete();
                 }
-                ItemStack item = new ItemBuilder()
-                        .setSkull(a)
-                        .setName(prof.getName())
-                        .addLoreLine("Klicke um zu entfernen.")
-                        .whenClicked("telepads:remove_permittet_player")
+                ItemStack item = new ItemBuilder(a)
+                        .setName(Component.text(prof.getName()))
+                        .addLoreLine(Component.text("Klicke um zu entfernen."))
+                        .addBothClickEvent("telepads:remove_permittet_player")
                         .build();
                 ItemMeta meta = item.getItemMeta();
                 meta.getPersistentDataContainer().set(teleID, PersistentDataType.INTEGER, pg.id);

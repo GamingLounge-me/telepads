@@ -19,7 +19,6 @@ import com.destroystokyo.paper.ParticleBuilder;
 
 import de.jonas.stuff.Stuff;
 import de.jonas.stuff.interfaced.LeftClickEvent;
-import de.jonas.stuff.utility.ItemBuilder;
 import de.jonas.telepads.DataBasePool;
 import de.jonas.telepads.Events;
 import de.jonas.telepads.Telepads;
@@ -28,6 +27,7 @@ import de.jonas.telepads.particle.effects.SpiralEffect;
 import de.jonas.telepads.particle.spawner.BuilderParticle;
 import dev.jorel.commandapi.CommandAPICommand;
 import me.gaminglounge.guiapi.Pagenation;
+import me.gaminglounge.itembuilder.ItemBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -123,11 +123,10 @@ public class GivePortableTeleportItem {
                     block = Material.getMaterial(blockID.toUpperCase());
                 }
 
-                ItemStack item = new ItemBuilder()
-                        .setMaterial(block)
+                ItemStack item = new ItemBuilder(block)
                         .setName(mm.deserialize(name).decoration(TextDecoration.ITALIC, false))
-                        .whenLeftClicked("telepads:teleport_per_portable_gui")
-                        .whenRightClicked("telepads:favorite_telepad")
+                        .addleftClickEvent("telepads:teleport_per_portable_gui")
+                        .addRightClickEvent("telepads:favorite_telepad")
                         .addLoreLine(mm.deserialize(conf.getString("PortableTelepad.LeftClickTELEPRT"))
                                 .decoration(TextDecoration.ITALIC, false))
                         .addLoreLine(mm.deserialize(conf.getString("PortableTelepad.RightClickFAVOTITE"))

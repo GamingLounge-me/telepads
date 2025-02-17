@@ -18,7 +18,6 @@ import com.destroystokyo.paper.ParticleBuilder;
 
 import de.jonas.stuff.Stuff;
 import de.jonas.stuff.interfaced.ClickEvent;
-import de.jonas.stuff.utility.ItemBuilder;
 import de.jonas.telepads.DataBasePool;
 import de.jonas.telepads.Events;
 import de.jonas.telepads.Telepads;
@@ -27,6 +26,7 @@ import de.jonas.telepads.particle.effects.SpiralEffect;
 import de.jonas.telepads.particle.spawner.BuilderParticle;
 import dev.jorel.commandapi.CommandAPICommand;
 import me.gaminglounge.guiapi.Pagenation;
+import me.gaminglounge.itembuilder.ItemBuilder;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
 public class Admin {
@@ -81,10 +81,9 @@ public class Admin {
         if (pads != null) {
             for (int a : pads) {
                 String name = DataBasePool.getName(db, a);
-                ItemStack item = new ItemBuilder()
-                        .setMaterial(Material.BEACON)
-                        .setName(name)
-                        .whenClicked("telepads:teleport_per_portable_gui")
+                ItemStack item = new ItemBuilder(Material.BEACON)
+                        .setName(MiniMessage.miniMessage().deserialize(name))
+                        .addBothClickEvent("telepads:teleport_per_portable_gui")
                         .build();
                 ItemMeta meta = item.getItemMeta();
                 meta.getPersistentDataContainer().set(Events.teleID, PersistentDataType.INTEGER, a);
