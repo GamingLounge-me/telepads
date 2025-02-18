@@ -9,7 +9,7 @@ authors:
 loader: de.jonas.telepads.Telepadloader
 dependencies:
   server:
-    Stuff:
+    ItemBuilder:
       load: BEFORE
       required: true
       join-classpath: true
@@ -18,6 +18,14 @@ dependencies:
       required: false
       join-classpath: true
     ConfigAPI:
+      load: BEFORE
+      required: true
+      join-classpath: true
+    PlayerInputAPI:
+      load: BEFORE
+      required: true
+      join-classpath: true
+    GuiAPI:
       load: BEFORE
       required: true
       join-classpath: true
