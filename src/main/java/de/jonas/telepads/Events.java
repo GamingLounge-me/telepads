@@ -21,7 +21,6 @@ import org.bukkit.persistence.PersistentDataType;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
 
-import de.jonas.stuff.utility.UseNextChatInput;
 import de.jonas.telepads.commands.GiveBuildItem;
 import de.jonas.telepads.commands.GivePortableTeleportItem;
 import de.jonas.telepads.gui.CustomizeGUI;
@@ -30,6 +29,7 @@ import de.jonas.telepads.gui.TelepadGui;
 import me.gaminglounge.guiapi.Pagenation;
 import me.gaminglounge.itembuilder.ItemBuilder;
 import me.gaminglounge.itembuilder.ItemBuilderManager;
+import me.gaminglounge.playerinputapi.UseNextChatInput;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
@@ -70,8 +70,8 @@ public class Events {
             e.getWhoClicked().closeInventory();
             if (e.getInventory().getHolder() instanceof CustomizeGUI tg) {
                 new UseNextChatInput((Player) e.getWhoClicked())
-                        .sendMessage(
-                                "Welcher soll dein neuer Anzeige Block sein?.<br>Schreibe \"exit\" oder \"abbrechen\" um den Vorgang abzubrechen.")
+                        .sendMessage(mm.deserialize(
+                                "Welcher soll dein neuer Anzeige Block sein?.<br>Schreibe \"exit\" oder \"abbrechen\" um den Vorgang abzubrechen."))
                         .setChatEvent((player, message) -> {
                             if (message.equalsIgnoreCase("exit") || message.equalsIgnoreCase("abbrechen")) {
                                 player.sendMessage("Abgebrochen");
@@ -132,8 +132,8 @@ public class Events {
                 e.setCancelled(true);
                 e.getWhoClicked().closeInventory();
                 new UseNextChatInput((Player) e.getWhoClicked())
-                        .sendMessage(
-                                "Schreibe den Spielernamne den du hinzufügen willst in den Chat.<br>Schreibe \"exit\" zum abzubrechen.")
+                        .sendMessage(mm.deserialize(
+                                "Schreibe den Spielernamne den du hinzufügen willst in den Chat.<br>Schreibe \"exit\" zum abzubrechen."))
                         .setChatEvent((player, message) -> {
                             if (message.equalsIgnoreCase("exit")) {
                                 player.sendMessage("Abgebrochen");
