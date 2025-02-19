@@ -17,4 +17,4 @@ bin/
 *.class 
  
 # Package Files 
-*.jar 
+*.jar !gradle/wrapper/*.jar
