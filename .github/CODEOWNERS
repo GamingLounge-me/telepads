@@ -7,4 +7,5 @@ gradlew @gaminglounge-me/build-system
 gradlew.bat @gaminglounge-me/build-system
 
 readme.md
+README.md
 src/
