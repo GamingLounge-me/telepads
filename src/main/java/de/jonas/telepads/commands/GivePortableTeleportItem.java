@@ -14,6 +14,7 @@ import de.jonas.telepads.DataBasePool;
 import de.jonas.telepads.Events;
 import de.jonas.telepads.Telepads;
 import dev.jorel.commandapi.CommandAPICommand;
+import me.gaminglounge.configapi.Language;
 import me.gaminglounge.guiapi.Pagenation;
 import me.gaminglounge.itembuilder.ItemBuilder;
 import net.kyori.adventure.text.Component;
@@ -38,7 +39,6 @@ public class GivePortableTeleportItem {
     public static List<ItemStack> getItems(Player player) {
         MiniMessage mm = MiniMessage.miniMessage();
         Telepads telepads = Telepads.INSTANCE;
-        FileConfiguration conf = telepads.getConfig();
         DataBasePool db = Telepads.INSTANCE.basePool;
         List<Integer> pads = DataBasePool.getAllTelepadsIFPermissionAndLevel2PadFavorites(db, player.getUniqueId());
         List<Integer> padss = DataBasePool.getAllTelepadsIFPermissionAndLevel2PadNotFavorites(db, player.getUniqueId());
@@ -56,7 +56,7 @@ public class GivePortableTeleportItem {
                 boolean isFavorite = DataBasePool.getPlayerFavorite(db, player.getUniqueId(), a);
                 Component fav;
                 if (isFavorite) {
-                    fav = mm.deserialize(conf.getString("PortableTelepad.FavoriteMarker"))
+                    fav = mm.deserialize(Language.getValue(telepads, player, "telepad.list.gui.item.isFavorit"))
                             .decoration(TextDecoration.ITALIC, false);
                 } else {
                     fav = Component.text("");
@@ -72,9 +72,9 @@ public class GivePortableTeleportItem {
                         .setName(mm.deserialize(name).decoration(TextDecoration.ITALIC, false))
                         .addleftClickEvent("telepads:teleport_per_portable_gui")
                         .addRightClickEvent("telepads:favorite_telepad")
-                        .addLoreLine(mm.deserialize(conf.getString("PortableTelepad.LeftClickTELEPRT"))
+                        .addLoreLine(mm.deserialize(Language.getValue(telepads, player, "telepad.list.gui.item.teleport"))
                                 .decoration(TextDecoration.ITALIC, false))
-                        .addLoreLine(mm.deserialize(conf.getString("PortableTelepad.RightClickFAVOTITE"))
+                        .addLoreLine(mm.deserialize(Language.getValue(telepads, player, "telepad.list.gui.item.favorite"))
                                 .decoration(TextDecoration.ITALIC, false))
                         .addLoreLine(fav)
 

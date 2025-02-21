@@ -3,12 +3,14 @@ package de.jonas.telepads.gui;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 
 import de.jonas.telepads.DataBasePool;
 import de.jonas.telepads.Telepads;
+import me.gaminglounge.configapi.Language;
 import me.gaminglounge.itembuilder.ItemBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -22,17 +24,17 @@ public class PublishGUI implements InventoryHolder {
     public boolean publish;
     String pl;
 
-    public PublishGUI(int id, int level) {
+    public PublishGUI(int id, int level, Player player) {
         DataBasePool db = Telepads.INSTANCE.basePool;
         this.id = id;
         this.level = level;
         this.publish = DataBasePool.getPublic(db, id);
         if (level == 1) {
-            pl = conf.getString("Messages.telepadLevelRequired");
+            pl = Language.getValue(telepads, player, "telepad.gui.change.public.notLvl");
         } else if (publish) {
-            pl = conf.getString("CommonPage.public");
+            pl = Language.getValue(telepads, player, "public");
         } else {
-            pl = conf.getString("CommonPage.private");
+            pl = Language.getValue(telepads, player, "private");
         }
 
         inv = Bukkit.createInventory(this, (9 * 5), Component.text(""));
@@ -49,41 +51,41 @@ public class PublishGUI implements InventoryHolder {
 
         inv.setItem(11,
                 new ItemBuilder(Material.ENDER_EYE)
-                        .setName(MiniMessage.miniMessage().deserialize(conf.getString("TelepadGUI.publicity.name")))
+                        .setName(MiniMessage.miniMessage().deserialize(Language.getValue(telepads, player, "telepad.publicity.gui.title")))
                         .addLoreLine(Component.text(pl))
                         .addBothClickEvent("telepads:publish_to_everyone")
                         .build());
 
         inv.setItem(13,
                 new ItemBuilder(Material.PLAYER_HEAD)
-                        .setName(MiniMessage.miniMessage().deserialize(conf.getString("TelepadGUI.publicity.add.name")))
+                        .setName(MiniMessage.miniMessage().deserialize(Language.getValue(telepads, player, "telepad.publicity.gui.add")))
                         .addBothClickEvent("telepads:add_permittet_player")
                         .build());
 
         inv.setItem(15,
                 new ItemBuilder(Material.PAPER)
                         .setName(
-                                MiniMessage.miniMessage().deserialize(conf.getString("TelepadGUI.publicity.list.name")))
+                                MiniMessage.miniMessage().deserialize(Language.getValue(telepads, player, "telepad.publicity.gui.list")))
                         .addBothClickEvent("telepads:list_permittet_player")
                         .build());
 
         inv.setItem(31,
                 new ItemBuilder(Material.BARRIER)
-                        .setName(MiniMessage.miniMessage().deserialize(conf.getString("CommonPage.back")))
+                        .setName(MiniMessage.miniMessage().deserialize(Language.getValue(telepads, player, "back")))
                         .addBothClickEvent("telepads:open_telepad_gui")
                         .build());
 
     }
 
-    public void executePublishUpdate() {
+    public void executePublishUpdate(Player player) {
         if (publish) {
-            pl = conf.getString("CommonPage.public");
+            pl = Language.getValue(telepads, player, "public");
         } else {
-            pl = conf.getString("CommonPage.private");
+            pl = Language.getValue(telepads, player, "private");
         }
         inv.setItem(11,
                 new ItemBuilder(Material.ENDER_EYE)
-                        .setName(MiniMessage.miniMessage().deserialize(conf.getString("TelepadGUI.publicity.name")))
+                        .setName(MiniMessage.miniMessage().deserialize(Language.getValue(telepads, player, "telepad.publicity.gui.title")))
                         .addLoreLine(Component.text(pl))
                         .addBothClickEvent("telepads:publish_to_everyone")
                         .build());

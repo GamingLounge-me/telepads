@@ -19,6 +19,7 @@ import de.jonas.telepads.commands.GiveBuildItem;
 import de.jonas.telepads.particle.ParticleRunner;
 import de.jonas.telepads.particle.effects.SpiralEffect;
 import de.jonas.telepads.particle.spawner.BuilderParticle;
+import me.gaminglounge.configapi.Language;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
@@ -44,7 +45,7 @@ public class UseTelepad implements Listener{
             Double cost = conf.getDouble("UseTelepadCost");
             if (cost != 0) {
                 if (Telepads.getEconomy().getBalance(e.getPlayer()) <= cost) {
-                    e.getPlayer().sendMessage(mm.deserialize(conf.getString("Messages.noMoney")));
+                    e.getPlayer().sendMessage(mm.deserialize(Language.getValue(telepads, e.getPlayer(), "telepad.teleport.noMoney")));
                     return;
                 }
                 Telepads.getEconomy().withdrawPlayer(e.getPlayer(), cost);
@@ -52,7 +53,7 @@ public class UseTelepad implements Listener{
             l.setPitch(to.getPitch());
             l.setYaw(to.getYaw());
             if (cost != 0) {
-                e.getPlayer().sendMessage(mm.deserialize(conf.getString("Messages.teleport"),
+                e.getPlayer().sendMessage(mm.deserialize(Language.getValue(telepads, e.getPlayer(), "telepad.teleport"),
                     Placeholder.component("cost", Component.text(cost))
                 ));
             }

@@ -1,5 +1,6 @@
 {
     "prefix": "[Telepads]",
+    
     "error.player.hasTPA": "<gradient:#af06d1:#f23400>You have already sent a TPA to this player</gradient><white>.</white> <gray>(canceled)</gray>",
     "error.tpa.expired": "<gradient:#af06d1:#f23400>Your teleportation request has expired</gradient><white>.</white> <gray>(canceled)</gray>",
     "error.noTPA": "<gradient:#af06d1:#f23400>You have no teleportation request from <gradient:#0400ff:#ff00e6><player></gradient></gradient><white>.</white> <gray>(canceled)</gray>",
@@ -12,5 +13,31 @@
     "tpa.countdown": "<shadow:#000000FF><b><aqua><countdown></aqua></b></shadow>",
     "teleport.succefully": "<gradient:#48ff00:#b4ff29>You have been successfully teleported<white>.</white></gradient> <gray>(successful)</gray>",
     "teleport.unsafe": "<gradient:#af06d1:#f23400>The teleportation was canceled because the position is not safe</gradient><white>.</white> <gray>(canceled)</gray>",
-    "error.player.is.sender": "<gradient:#af06d1:#f23400>You cannot teleport to yourself</gradient><white>.</white> <gray>(canceled)</gray>"
+    "error.player.is.sender": "<gradient:#af06d1:#f23400>You cannot teleport to yourself</gradient><white>.</white> <gray>(canceled)</gray>",
+
+    "telepad.noPerms": "<red>You have no permissions for this telepad!</red>",
+    "telepad.gui.upgrade.level.1": "<white>Upgrade cost: <gold><cost></gold></white>",
+    "telepad.gui.destination.none": "<white>Set destinaiton</white>",
+    "telepad.gui.change.name": "<white>Change name</white>",
+    "telepad.gui.change.block": "<white>Change block</white>",
+    "telepad.gui.change.destination": "<white>Change destination</white>",
+    "telepad.gui.change.public.notLvl": "<red>Telepad level 2 benötigt!</red>",
+    "telepad.gui.open.customizer.name": "<white>Cosmetic settings</white>",
+    "telepad.gui.open.customizer.lore": "<white>Telepad name and display block</white>",
+    "telepad.list.gui.item.isFavorit": "<gold>Favorit</gold>",
+    "telepad.list.gui.item.teleport": "<white>Left click: teleport</white>",
+    "telepad.list.gui.item.favorite": "<white>Right click: favorit</white>",
+    "telepad.publicity.gui.title": "View permissions",
+    "telepad.publicity.gui.add": "Add player",
+    "telepad.publicity.gui.list": "List players",
+
+    "telepad.teleport": "<white>Teleport cost: <cost></white>",
+    "telepad.teleport.noMoney": "<red>You don't have enought money.</red>",
+
+    "pickup": "pickup",
+    "continue": "continue",
+    "back": "back",
+    "close": "close",
+    "public": "public",
+    "private": "private"
 }

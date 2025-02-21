@@ -3,12 +3,14 @@ package de.jonas.telepads.gui;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 
 import de.jonas.telepads.DataBasePool;
 import de.jonas.telepads.Telepads;
+import me.gaminglounge.configapi.Language;
 import me.gaminglounge.itembuilder.ItemBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -21,7 +23,7 @@ public class CustomizeGUI implements InventoryHolder {
     public int id, blockID;
     String pl, name;
 
-    public CustomizeGUI(int id, int level) {
+    public CustomizeGUI(int id, int level, Player player) {
         DataBasePool db = Telepads.INSTANCE.basePool;
         name = DataBasePool.getName(db, id);
         String blockID = DataBasePool.getBlockID(db, id);
@@ -49,20 +51,21 @@ public class CustomizeGUI implements InventoryHolder {
         inv.setItem(12,
                 new ItemBuilder(Material.getMaterial("NAME_TAG"))
                         .setName(MiniMessage.miniMessage()
-                                .deserialize(conf.getString("TelepadGUI.customizer.telepadname.name")))
+                                .deserialize(Language.getValue(telepads, player, "telepad.gui.change.name")))
                         .addBothClickEvent("telepads:click_change_name")
                         .build());
 
         inv.setItem(14,
                 new ItemBuilder(block)
                         .setName(MiniMessage.miniMessage()
-                                .deserialize(conf.getString("TelepadGUI.customizer.blocktype.name")))
+                                .deserialize(Language.getValue(telepads, player, "telepad.gui.change.block")))
                         .addBothClickEvent("telepads:click_block")
                         .build());
 
         inv.setItem(31,
                 new ItemBuilder(Material.BARRIER)
-                        .setName(MiniMessage.miniMessage().deserialize(conf.getString("CommonPage.back")))
+                        .setName(MiniMessage.miniMessage().
+                                        deserialize(Language.getValue(telepads, player, "close")))
                         .addBothClickEvent("telepads:open_telepad_gui")
                         .build());
 

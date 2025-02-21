@@ -113,7 +113,7 @@ public class Events {
         ItemBuilderManager.addBothClickEvent("telepads:open_customizer_gui", (e) -> {
             if (e.getInventory().getHolder() instanceof TelepadGui tg) {
                 e.setCancelled(true);
-                e.getWhoClicked().openInventory(new CustomizeGUI(tg.id, tg.level).getInventory());
+                e.getWhoClicked().openInventory(new CustomizeGUI(tg.id, tg.level, (Player) e.getWhoClicked()).getInventory());
             }
         });
 
@@ -131,7 +131,7 @@ public class Events {
             if (e.getClickedInventory().getHolder() instanceof PublishGUI tg) {
                 DataBasePool.setPublic(db, tg.id);
                 tg.publish = !(tg.publish);
-                tg.executePublishUpdate();
+                tg.executePublishUpdate((Player) e.getWhoClicked());
             }
             e.setCancelled(true);
         });
@@ -203,7 +203,7 @@ public class Events {
         ItemBuilderManager.addBothClickEvent("telepads:open_publish_gui", (e) -> {
             if (e.getInventory().getHolder() instanceof TelepadGui tg) {
                 e.setCancelled(true);
-                e.getWhoClicked().openInventory(new PublishGUI(tg.id, tg.level).getInventory());
+                e.getWhoClicked().openInventory(new PublishGUI(tg.id, tg.level, (Player) e.getWhoClicked()).getInventory());
             }
         });
 

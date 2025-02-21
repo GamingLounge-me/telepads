@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import de.jonas.telepads.DataBasePool;
 import de.jonas.telepads.Telepads;
+import me.gaminglounge.configapi.Language;
 import me.gaminglounge.itembuilder.ItemBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -59,7 +60,7 @@ public class TelepadGui implements InventoryHolder {
             lore.add(mm.deserialize("<white>Z: " + destination.getBlockZ() + "</white>")
                     .decoration(TextDecoration.ITALIC, false));
         } else {
-            lore.add(mm.deserialize(conf.getString("Messages.setDestination")));
+            lore.add(mm.deserialize(Language.getValue(telepads, p, "telepad.gui.destination.none")));
         }
 
         this.telepadGui = Bukkit.createInventory(this, (3 * 9), mm.deserialize(name));
@@ -75,40 +76,40 @@ public class TelepadGui implements InventoryHolder {
 
         telepadGui.setItem(4,
                 new ItemBuilder(Material.ANVIL)
-                        .setName(MiniMessage.miniMessage().deserialize(conf.getString("TelepadGUI.customizer.name")))
+                        .setName(MiniMessage.miniMessage().deserialize(Language.getValue(telepads, p, "telepad.gui.open.customizer.name")))
                         .addLoreLine(
-                                MiniMessage.miniMessage().deserialize(conf.getString("TelepadGUI.customizer.lore")))
+                                MiniMessage.miniMessage().deserialize(Language.getValue(telepads, p, "telepad.gui.open.customizer.lore")))
                         .addBothClickEvent("telepads:open_customizer_gui")
                         .build());
 
         telepadGui.setItem(14,
                 new ItemBuilder(Material.GRASS_BLOCK)
-                        .setName(MiniMessage.miniMessage().deserialize(conf.getString("TelepadGUI.destination.name")))
+                        .setName(MiniMessage.miniMessage().deserialize(Language.getValue(telepads, p, "telepad.gui.change.destination")))
                         .setLore(lore)
                         .addBothClickEvent("telepad:open_initial_destination_gui")
                         .build());
 
         telepadGui.setItem(10,
                 new ItemBuilder(Material.RED_DYE)
-                        .setName(MiniMessage.miniMessage().deserialize(conf.getString("TelepadGUI.pickup.name")))
+                        .setName(MiniMessage.miniMessage().deserialize(Language.getValue(telepads, p, "pickup")))
                         .addBothClickEvent("telepads:pick_telepad_up")
                         .build());
 
         telepadGui.setItem(12,
                 new ItemBuilder(Material.ENDER_EYE)
-                        .setName(MiniMessage.miniMessage().deserialize(conf.getString("TelepadGUI.publicity.name")))
+                        .setName(MiniMessage.miniMessage().deserialize(Language.getValue(telepads, p, "telepad.publicity.gui.title")))
                         .addBothClickEvent("telepads:open_publish_gui")
                         .build());
 
         telepadGui.setItem(22,
                 new ItemBuilder(Material.BARRIER)
-                        .setName(MiniMessage.miniMessage().deserialize(conf.getString("CommonPage.close")))
+                        .setName(MiniMessage.miniMessage().deserialize(Language.getValue(telepads, p, "close")))
                         .addBothClickEvent("telepads:closeinv")
                         .build());
 
         String levelLore;
         if (level == 1) {
-            levelLore = conf.getString("Messages.upgrade");
+            levelLore = Language.getValue(telepads, p, "telepad.gui.upgrade.level.1");
         } else {
             levelLore = "";
         }
