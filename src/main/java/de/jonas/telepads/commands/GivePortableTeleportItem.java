@@ -23,7 +23,6 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 public class GivePortableTeleportItem {
 
     public GivePortableTeleportItem() {
-        MiniMessage mm = MiniMessage.miniMessage();
         Telepads telepads = Telepads.INSTANCE;
         FileConfiguration conf = telepads.getConfig();
 

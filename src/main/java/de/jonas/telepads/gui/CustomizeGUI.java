@@ -23,7 +23,7 @@ public class CustomizeGUI implements InventoryHolder {
 
     public CustomizeGUI(int id, int level) {
         DataBasePool db = Telepads.INSTANCE.basePool;
-        String name = DataBasePool.getName(db, id);
+        name = DataBasePool.getName(db, id);
         String blockID = DataBasePool.getBlockID(db, id);
         Material block;
         if (blockID == null) {
@@ -62,7 +62,7 @@ public class CustomizeGUI implements InventoryHolder {
 
         inv.setItem(31,
                 new ItemBuilder(Material.BARRIER)
-                        .setName(MiniMessage.miniMessage().deseializeOrNull(conf.getString("CommonPage.back")))
+                        .setName(MiniMessage.miniMessage().deserialize(conf.getString("CommonPage.back")))
                         .addBothClickEvent("telepads:open_telepad_gui")
                         .build());
 
