@@ -23,7 +23,6 @@ public final class TelepadCrafting {
 
         recipe.addIngredient(1, Material.ENDER_EYE);
         recipe.addIngredient(1, Material.DIAMOND_BLOCK);
-        recipe.addIngredient(1, Material.ENDER_EYE);
         recipe.addIngredient(4, Material.GLASS);
         recipe.addIngredient(3, Material.OBSIDIAN);
 
