@@ -12,10 +12,11 @@ public class SpiralEffect implements ParticleEffect {
 
     /**
      * Creates a Spiral Effect
-     * @param number of Spiralparts
-     * @param rotation how many full rotations
-     * @param height of the effect in blocks relative to effect location
-     * @param spawner for the particles
+     * 
+     * @param number    of Spiralparts
+     * @param rotations how many full rotations
+     * @param height    of the effect in blocks relative to effect location
+     * @param spawner   for the particles
      */
     public SpiralEffect(int number, double rotations, double height, ParticleSpawner spawner) {
         this.number = number;
@@ -28,7 +29,7 @@ public class SpiralEffect implements ParticleEffect {
         double numberOffset = 2 * Math.PI / (double) number;
         double rotProgress = progress * 2 * Math.PI * rotations;
         double yo = progress * height;
-        for(int i = 0; i < number; i++) {
+        for (int i = 0; i < number; i++) {
             double phi = rotProgress + i * numberOffset;
             spawner.spawn(runner, progress, Math.cos(phi), yo, Math.sin(phi));
         }

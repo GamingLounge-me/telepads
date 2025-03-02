@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import de.jonas.telepads.DataBasePool;
 import de.jonas.telepads.Telepads;
+import me.gaminglounge.itembuilder.ItemBuilder;
 import me.gaminglounge.configapi.Language;
 import me.gaminglounge.itembuilder.ItemBuilder;
 import net.kyori.adventure.text.Component;
@@ -64,8 +65,7 @@ public class CustomizeGUI implements InventoryHolder {
 
         inv.setItem(31,
                 new ItemBuilder(Material.BARRIER)
-                        .setName(MiniMessage.miniMessage().
-                                        deserialize(Language.getValue(telepads, player, "close")))
+                        .setName(MiniMessage.miniMessage().deserialize(Language.getValue(telepads, player, "close")))
                         .addBothClickEvent("telepads:open_telepad_gui")
                         .build());
 

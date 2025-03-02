@@ -12,6 +12,7 @@ import de.jonas.telepads.DataBasePool;
 import de.jonas.telepads.Telepads;
 import me.gaminglounge.configapi.Language;
 import me.gaminglounge.itembuilder.ItemBuilder;
+import me.gaminglounge.itembuilder.ItemBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
@@ -51,21 +52,24 @@ public class PublishGUI implements InventoryHolder {
 
         inv.setItem(11,
                 new ItemBuilder(Material.ENDER_EYE)
-                        .setName(MiniMessage.miniMessage().deserialize(Language.getValue(telepads, player, "telepad.publicity.gui.title")))
+                        .setName(MiniMessage.miniMessage()
+                                .deserialize(Language.getValue(telepads, player, "telepad.publicity.gui.title")))
                         .addLoreLine(Component.text(pl))
                         .addBothClickEvent("telepads:publish_to_everyone")
                         .build());
 
         inv.setItem(13,
                 new ItemBuilder(Material.PLAYER_HEAD)
-                        .setName(MiniMessage.miniMessage().deserialize(Language.getValue(telepads, player, "telepad.publicity.gui.add")))
+                        .setName(MiniMessage.miniMessage()
+                                .deserialize(Language.getValue(telepads, player, "telepad.publicity.gui.add")))
                         .addBothClickEvent("telepads:add_permittet_player")
                         .build());
 
         inv.setItem(15,
                 new ItemBuilder(Material.PAPER)
                         .setName(
-                                MiniMessage.miniMessage().deserialize(Language.getValue(telepads, player, "telepad.publicity.gui.list")))
+                                MiniMessage.miniMessage()
+                                        .deserialize(Language.getValue(telepads, player, "telepad.publicity.gui.list")))
                         .addBothClickEvent("telepads:list_permittet_player")
                         .build());
 
@@ -85,7 +89,8 @@ public class PublishGUI implements InventoryHolder {
         }
         inv.setItem(11,
                 new ItemBuilder(Material.ENDER_EYE)
-                        .setName(MiniMessage.miniMessage().deserialize(Language.getValue(telepads, player, "telepad.publicity.gui.title")))
+                        .setName(MiniMessage.miniMessage()
+                                .deserialize(Language.getValue(telepads, player, "telepad.publicity.gui.title")))
                         .addLoreLine(Component.text(pl))
                         .addBothClickEvent("telepads:publish_to_everyone")
                         .build());

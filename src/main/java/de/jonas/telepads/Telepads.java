@@ -11,7 +11,6 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import de.jonas.telepads.teleportation.TeleportationManager;
 import de.jonas.telepads.commands.Admin;
 import de.jonas.telepads.commands.GiveBuildItem;
 import de.jonas.telepads.commands.GivePortableTeleportItem;
@@ -20,6 +19,7 @@ import de.jonas.telepads.commands.Teleportation;
 import de.jonas.telepads.listener.OpenGui;
 import de.jonas.telepads.listener.PreventChangePad;
 import de.jonas.telepads.listener.UseTelepad;
+import de.jonas.telepads.teleportation.TeleportationManager;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
 import me.gaminglounge.configapi.LoadConfig;
@@ -81,6 +81,8 @@ public class Telepads extends JavaPlugin {
         if (!setupEconomy())
             getLogger().log(Level.WARNING,
                     "Economy wasnt setupped correctly, have you installed Vault and an Eco-plugin?");
+
+        new TelepadCrafting();
 
     }
 
