@@ -16,6 +16,7 @@ import de.jonas.telepads.commands.GiveBuildItem;
 import de.jonas.telepads.commands.GivePortableTeleportItem;
 import de.jonas.telepads.commands.ReloadCommand;
 import de.jonas.telepads.commands.Teleportation;
+import de.jonas.telepads.listener.DiscoverRecepie;
 import de.jonas.telepads.listener.OpenGui;
 import de.jonas.telepads.listener.PreventChangePad;
 import de.jonas.telepads.listener.UseTelepad;
@@ -101,6 +102,7 @@ public class Telepads extends JavaPlugin {
         pm.registerEvents(new OpenGui(), this);
         pm.registerEvents(new PreventChangePad(), this);
         pm.registerEvents(new UseTelepad(), this);
+        pm.registerEvents(new DiscoverRecepie(), this);
     }
 
     private boolean setupEconomy() {
