@@ -9,8 +9,6 @@ public class DiscoverRecipe implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        if (event.getPlayer().hasPlayedBefore())
-            return;
         event.getPlayer().discoverRecipe(NamespacedKey.fromString("telepads:telepad"));
     }
 
