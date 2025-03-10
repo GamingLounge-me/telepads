@@ -9,7 +9,7 @@ public class DiscoverRecepie implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        event.getPlayer().discoverRecipe(new NamespacedKey("telepads", "telepad"));
+        event.getPlayer().discoverRecipe(NamespacedKey.fromString("telepads:telepad"));
     }
 
 }
