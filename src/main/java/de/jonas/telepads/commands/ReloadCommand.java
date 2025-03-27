@@ -14,12 +14,12 @@ public class ReloadCommand {
         MiniMessage mm = MiniMessage.miniMessage();
 
         new CommandAPICommand("telepads:reload")
-            .withPermission(conf.getString("ReloadCommand.permission"))
-            .executes(((commandSender, commandArguments) -> {
-                telepads.reloadConfig();
-                commandSender.sendMessage(mm.deserialize("[Telepads] Config successfully reloaded"));
-            }))
-        .register();
+                .withPermission("telepads.commands.reload")
+                .executes(((commandSender, commandArguments) -> {
+                    telepads.reloadConfig();
+                    commandSender.sendMessage(mm.deserialize("[Telepads] Config successfully reloaded"));
+                }))
+                .register();
     }
-    
+
 }

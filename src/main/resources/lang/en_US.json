@@ -30,6 +30,19 @@
     "telepad.publicity.gui.title": "View permissions",
     "telepad.publicity.gui.add": "Add player",
     "telepad.publicity.gui.list": "List players",
+    "telepad.publicity.gui.remove": "Der Spieler <green>\"<player>\"</green> wurde entfernt.",
+    "telepad.publicity.gui.remove.lore": "Remove player",
+    "telepad.set.destination": "You have successfully set \"<destination>\" as your destination.",
+    "telepad.pickup": "You have successfully picked up your telepad.",
+    "telepad.level.max": "<red>Telepad level is already at maximum!</red>",
+    "telepad.level.upgrade": "You have successfully upgraded your telepad.</green>",
+
+    "telepad.question.cancel.word": "exit",
+    "telepad.question.cancel.message": "Cancelled",
+    "telepad.question.change.block": "Which block shoud be displayed?<br>Write \"<cancel>\" to cancel.",
+    "telepad.question.change.block.succesfull": "Your telepad block has been changed to \"<green><name></green>\".",
+    "telepad.question.change.name": "Write the playername of the player you want to add to your telepad to the chat.<br>Write \"<cancel>\" to cancel.",
+    "telepad.question.change.name.succesfull": "The player \"<green><name></green>\" was added to your telepad.",
 
     "telepad.teleport": "<white>Teleport cost: <cost></white>",
     "telepad.teleport.noMoney": "<red>You don't have enought money.</red>",
@@ -39,5 +52,12 @@
     "back": "back",
     "close": "close",
     "public": "public",
-    "private": "private"
+    "private": "private",
+    "item.not.found": "<red>This item wasn't found.</red",
+
+    "error.regex": "<red>Your input is incorrect, it can only contain \"<regex>\"</red>",
+    "error.inventory.full": "<red>Your inventory is full.</red>",
+    "error.permission": "<red>You have no permissions for this.</red>",
+    "error.no.money": "<red>You don't have enought money.</red>",
+    "error.database": "<red>There was an error with the database, pls contact an administrator.</red>"
 }

@@ -36,6 +36,7 @@ import de.jonas.telepads.gui.TelepadGui;
 import de.jonas.telepads.particle.ParticleRunner;
 import de.jonas.telepads.particle.effects.SpiralEffect;
 import de.jonas.telepads.particle.spawner.BuilderParticle;
+import me.gaminglounge.configapi.Language;
 import me.gaminglounge.guiapi.Pagenation;
 import me.gaminglounge.itembuilder.ItemBuilder;
 import me.gaminglounge.itembuilder.ItemBuilderManager;
@@ -81,12 +82,16 @@ public class Events {
         ItemBuilderManager.addBothClickEvent("telepads:click_block", (e) -> {
             e.getWhoClicked().closeInventory();
             if (e.getInventory().getHolder() instanceof CustomizeGUI tg) {
+                String cancel = Language.getValue(telepads, (Player) e.getWhoClicked(), "telepad.question.cancel.word");
                 new UseNextChatInput((Player) e.getWhoClicked())
                         .sendMessage(mm.deserialize(
-                                "Welcher soll dein neuer Anzeige Block sein?.<br>Schreibe \"exit\" oder \"abbrechen\" um den Vorgang abzubrechen."))
+                                Language.getValue(telepads, (Player) e.getWhoClicked(),
+                                        "telepad.question.change.block"),
+                                Placeholder.component("cancel", mm.deserialize(cancel))))
                         .setChatEvent((player, message) -> {
-                            if (message.equalsIgnoreCase("exit") || message.equalsIgnoreCase("abbrechen")) {
-                                player.sendMessage("Abgebrochen");
+                            if (message.equalsIgnoreCase(cancel)) {
+                                player.sendMessage(mm.deserialize(
+                                        Language.getValue(telepads, player, "telepad.question.cancel.message")));
                                 return;
                             }
 
@@ -94,16 +99,19 @@ public class Events {
                             if (ptm.matcher(message).matches()) {
                                 Material mat = Material.matchMaterial(message.toUpperCase());
                                 if (mat == null || !mat.isItem()) {
-                                    player.sendMessage(mm.deserialize("<red>Dieses Item wurde nicht gefunden.</red>"));
+                                    player.sendMessage(
+                                            mm.deserialize(Language.getValue(telepads, player, "item.not.found")));
                                     return;
                                 }
                                 DataBasePool.setBlockID(db, tg.id, message);
                                 player.sendMessage(
                                         mm.deserialize(
-                                                "Dein Telepad Block wurde zu \"<green><name></green>\" geändert.",
+                                                Language.getValue(telepads, player,
+                                                        "telepad.question.change.block.succesfull"),
                                                 Placeholder.component("name", Component.text(message))));
                             } else {
-                                player.sendMessage(mm.deserialize("<red>Dieses Item wurde nicht gefunden.</red>"));
+                                player.sendMessage(
+                                        mm.deserialize(Language.getValue(telepads, player, "item.not.found")));
                             }
                         })
                         .capture();
@@ -142,20 +150,22 @@ public class Events {
 
                 e.setCancelled(true);
                 e.getWhoClicked().closeInventory();
+                String cancel = Language.getValue(telepads, (Player) e.getWhoClicked(), "telepad.question.cancel.word");
                 new UseNextChatInput((Player) e.getWhoClicked())
                         .sendMessage(mm.deserialize(
-                                "Schreibe den Spielernamne den du hinzufügen willst in den Chat.<br>Schreibe \"exit\" zum abzubrechen."))
+                                Language.getValue(telepads, (Player) e.getWhoClicked(), "telepad.question.change.name"),
+                                Placeholder.component("cancel", mm.deserialize(cancel))))
                         .setChatEvent((player, message) -> {
-                            if (message.equalsIgnoreCase("exit")) {
-                                player.sendMessage("Abgebrochen");
+                            if (message.equalsIgnoreCase(cancel)) {
+                                player.sendMessage(mm.deserialize(
+                                        Language.getValue(telepads, player, "telepad.question.cancel.message")));
                                 return;
                             }
                             DataBasePool.addPlayerPermission(db, pg.id, Bukkit.getOfflinePlayer(message).getUniqueId());
                             player.sendMessage(mm.deserialize(
-                                    "Der Spieler \"<green><name></green>\" wurde für dieses Telepad gesetzt.",
+                                    Language.getValue(telepads, player, "telepad.question.change.name.succesfull"),
                                     Placeholder.component("name",
                                             Component.text(Bukkit.getOfflinePlayer(message).getName()))));
-                            // player.sendMessage(mm.deserialize("<red>Ungültiger Name.</red>"));
                         })
                         .capture();
             }
@@ -169,7 +179,8 @@ public class Events {
                     meta.getPersistentDataContainer().get(teleID, PersistentDataType.INTEGER),
                     skull.getPlayerProfile().getId());
             e.getWhoClicked().sendMessage(mm.deserialize(
-                    "Der Spieler <green>\"" + skull.getPlayerProfile().getName() + "\"</green> wurde entfernt."));
+                    Language.getValue(telepads, (Player) e.getWhoClicked(), "telepad.publicity.gui.remove"),
+                    Placeholder.component("player", Component.text(skull.getPlayerProfile().getName()))));
             if (e.getInventory().getHolder() instanceof Pagenation pg) {
                 pg.items.remove(e.getCurrentItem());
                 pg.fillPage(pg.currentpage);
@@ -188,7 +199,8 @@ public class Events {
                     }
                     ItemStack item = new ItemBuilder(a)
                             .setName(Component.text(prof.getName()))
-                            .addLoreLine(Component.text("Klicke um zu entfernen."))
+                            .addLoreLine(Component.text(Language.getValue(telepads, (Player) e.getWhoClicked(),
+                                    "telepad.publicity.gui.remove.lore")))
                             .addBothClickEvent("telepads:remove_permittet_player")
                             .build();
                     ItemMeta meta = item.getItemMeta();
@@ -217,8 +229,10 @@ public class Events {
 
             DataBasePool.setNewDestinationID(db, idsource, id);
             Component name = mm.deserialize(DataBasePool.getName(db, id));
-            e.getWhoClicked().sendMessage(mm.deserialize("Du hast \"<desti>\" erfolgreich als Ziel gesetzt.",
-                    Placeholder.component("desti", name)));
+            e.getWhoClicked()
+                    .sendMessage(mm.deserialize(
+                            Language.getValue(telepads, (Player) e.getWhoClicked(), "telepad.set.destination"),
+                            Placeholder.component("destination", name)));
             Location l = DataBasePool.getlocation(db, idsource);
             l.add(0.5, 2.5, 0.5);
             l.getNearbyEntitiesByType(TextDisplay.class, 0.1).forEach(display -> {
@@ -247,11 +261,13 @@ public class Events {
         ItemBuilderManager.addBothClickEvent("telepads:click_change_name", (e) -> {
             e.getWhoClicked().closeInventory();
             if (e.getInventory().getHolder() instanceof CustomizeGUI tg) {
-                new UseNextChatInput((Player) e.getWhoClicked())
-                        .sendMessage(mm.deserialize(conf.getString("TelepadGUI.customizer.telepadname.question")))
+                Player p = (Player) e.getWhoClicked();
+                new UseNextChatInput(p)
+                        .sendMessage(mm.deserialize(Language.getValue(telepads, p, "telepad.question.change.name")))
                         .setChatEvent((player, message) -> {
                             if (conf.getStringList("TelepadGUI.customizer.telepadname.exitWords").contains(message)) {
-                                player.sendMessage(conf.getString("Messages.exitChatInput"));
+                                player.sendMessage(
+                                        Language.getValue(telepads, player, "telepad.question.cancel.message"));
                                 return;
                             }
 
@@ -259,10 +275,12 @@ public class Events {
                             if (ptm.matcher(PlainTextComponentSerializer.plainText().serialize(mm.deserialize(message)))
                                     .matches()) {
                                 DataBasePool.setName(db, tg.id, message);
-                                player.sendMessage(mm.deserialize(conf.getString("Messages.renameTelepad"),
+                                player.sendMessage(mm.deserialize(
+                                        Language.getValue(telepads, p, "telepad.question.change.name.succesfull"),
                                         Placeholder.component("name", mm.deserialize(message))));
                             } else {
-                                player.sendMessage(mm.deserialize(conf.getString("Messages.regex")));
+                                player.sendMessage(mm.deserialize(Language.getValue(telepads, p, "error.regex"),
+                                        Placeholder.component(message, Component.text(ptm.pattern()))));
                             }
                         })
                         .capture();
@@ -276,7 +294,8 @@ public class Events {
             if (e.getWhoClicked().getUniqueId().equals(owner)
                     || e.getWhoClicked().hasPermission(conf.getString("AdminPermission"))) {
                 if (e.getWhoClicked().getInventory().firstEmpty() == -1) {
-                    e.getWhoClicked().sendMessage(mm.deserialize(conf.getString("Messages.invFull")));
+                    e.getWhoClicked().sendMessage(mm.deserialize(Language.getValue(telepads, (Player) e.getWhoClicked(),
+                            "error.inventory.full")));
                     return;
                 }
                 e.getWhoClicked().closeInventory();
@@ -303,15 +322,19 @@ public class Events {
                                 .setName(Component.text("Telepad"))
                                 .addBlockPlaceEvent("telepads:buildTelepad")
                                 .build());
-                Double cost = conf.getDouble("TelepadGUI.levelup.cost");
+                Double cost = conf.getDouble("UpgradeCost");
                 if (gui.level >= 2 && cost != 0) {
                     Telepads.getEconomy().depositPlayer((OfflinePlayer) e.getWhoClicked(), cost);
-                    e.getWhoClicked().sendMessage(mm.deserialize(conf.getString("Messages.pickupRegainMoney"),
-                            Placeholder.component("cost", Component.text(cost))));
+                    e.getWhoClicked()
+                            .sendMessage(mm.deserialize(
+                                    Language.getValue(telepads, (Player) e.getWhoClicked(), "telepad.teleport"),
+                                    Placeholder.component("cost", Component.text(cost))));
                 }
-                e.getWhoClicked().sendMessage(mm.deserialize(conf.getString("Messages.pickup")));
+                e.getWhoClicked().sendMessage(
+                        mm.deserialize(Language.getValue(telepads, (Player) e.getWhoClicked(), "telepad.pickup")));
             } else {
-                e.getWhoClicked().sendMessage(mm.deserialize(conf.getString("Messages.noPerms")));
+                e.getWhoClicked().sendMessage(
+                        mm.deserialize(Language.getValue(telepads, (Player) e.getWhoClicked(), "error.permission")));
             }
         });
 
@@ -348,17 +371,19 @@ public class Events {
             e.setCancelled(true);
             OfflinePlayer p = (OfflinePlayer) e.getWhoClicked();
 
-            Double cost = conf.getDouble("TelepadGUI.levelup.cost");
+            Double cost = conf.getDouble("UpgradeCost");
             if (p instanceof Player player && e.getInventory().getHolder() instanceof TelepadGui tg) {
                 if (tg.level >= 2) {
-                    player.sendMessage(mm.deserialize(conf.getString("Messages.maxLevel")));
+                    player.sendMessage(mm
+                            .deserialize(Language.getValue(telepads, (Player) e.getWhoClicked(), "telepad.level.max")));
                     return;
                 }
                 if (cost != 0) {
                     if (Telepads.getEconomy().getBalance(p) >= cost) {
                         Telepads.getEconomy().withdrawPlayer(player, cost);
                     } else {
-                        player.sendMessage(mm.deserialize(conf.getString("Messages.noMoney")));
+                        player.sendMessage(mm.deserialize(
+                                Language.getValue(telepads, (Player) e.getWhoClicked(), "error.no.money")));
                         return;
                     }
                 }
@@ -370,7 +395,8 @@ public class Events {
                                 .addLoreLine(MiniMessage.miniMessage().deserialize("Level: " + tg.level))
                                 .addBothClickEvent("telepad:pad_level_up")
                                 .build());
-                player.sendMessage(mm.deserialize(conf.getString("Messages.upgraded")));
+                player.sendMessage(mm
+                        .deserialize(Language.getValue(telepads, (Player) e.getWhoClicked(), "telepad.level.upgrade")));
             }
         });
 
@@ -421,7 +447,8 @@ public class Events {
                     pv.getBlockPlaced().getState(false) instanceof Beacon b) {
                 int id = DataBasePool.setNewTelepad(db, pv.getPlayer().getUniqueId(), pv.getBlock().getLocation());
                 if (id == -1) {
-                    pv.getPlayer().sendMessage(mm.deserialize("Messages.dbError"));
+                    pv.getPlayer()
+                            .sendMessage(mm.deserialize(Language.getValue(telepads, pv.getPlayer(), "error.database")));
                     return;
                 }
                 b.getPersistentDataContainer().set(GiveBuildItem.telepadNum, PersistentDataType.INTEGER, id);
@@ -453,13 +480,15 @@ public class Events {
             double cost = conf.getDouble("UseTelepadCost");
             if (cost != 0) {
                 if (Telepads.getEconomy().getBalance((OfflinePlayer) e.getWhoClicked()) <= cost) {
-                    e.getWhoClicked().sendMessage(mm.deserialize("Messages.noMoney"));
+                    e.getWhoClicked().sendMessage(mm.deserialize(
+                            Language.getValue(telepads, (Player) e.getWhoClicked(), "telepad.teleport.noMoney")));
                     return;
                 }
                 Telepads.getEconomy().withdrawPlayer((OfflinePlayer) e.getWhoClicked(), cost);
             }
-            e.getWhoClicked().sendMessage(mm.deserialize("Messages.teleport",
-                    Placeholder.component("cost", Component.text(cost))));
+            e.getWhoClicked().sendMessage(
+                    mm.deserialize(Language.getValue(telepads, (Player) e.getWhoClicked(), "telepad.teleport"),
+                            Placeholder.component("cost", Component.text(cost))));
             e.getWhoClicked().teleport(l);
             new ParticleRunner(
                     Telepads.INSTANCE,
