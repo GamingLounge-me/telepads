@@ -8,6 +8,7 @@ The Telepad can also be obtained via Recepie, this recepie is given to all users
 - 1x Diamond Block
 - 4x Glass
 - 3x Obsidian Block
+
 It provied an interface where it can be:
 
 1. pickupped
